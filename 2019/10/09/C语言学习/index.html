@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="Huster-Maosr">
 <meta property="og:description" content="数据在内存里是以补码的形式存储的原因有三点：1.保证了0的唯一性，保证了数的表示的准确性。 2.让加减可以统一处理，优化了数的运算过程。 3.解决了自身逻辑意义的完整性。  不同的进制要使用不同 的转换说明。以十进制显示数字，使用%d；以八进制显示数字，使用%o； 以十六进制显示数字，使用%x。另外，要显示各进制数的前缀0、0x和0X， 必须分别使用%#o、%#x、%#X。  scanf()返回成">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-17T08:46:42.106Z">
+<meta property="og:updated_time" content="2019-10-24T14:54:23.962Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言学习">
 <meta name="twitter:description" content="数据在内存里是以补码的形式存储的原因有三点：1.保证了0的唯一性，保证了数的表示的准确性。 2.让加减可以统一处理，优化了数的运算过程。 3.解决了自身逻辑意义的完整性。  不同的进制要使用不同 的转换说明。以十进制显示数字，使用%d；以八进制显示数字，使用%o； 以十六进制显示数字，使用%x。另外，要显示各进制数的前缀0、0x和0X， 必须分别使用%#o、%#x、%#X。  scanf()返回成">
@@ -282,6 +282,77 @@
 <li>第1个声明中花括号内的标 识符枚举了spectrum变量可能有的值。因此,color 可能的值是 red、 orange、yellow等</li>
 <li>这些符号常量被称为枚举符（enumerator）。</li>
 <li></li>
+</ul>
+<hr>
+<h2 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h2><p>####fgets()函数</p>
+<blockquote>
+<ul>
+<li>函数的第2个参数指明了读入字符的最大数量。</li>
+</ul>
+</blockquote>
+<ul>
+<li>如果该参数的值是n，那么fgets()将读入n-1个字符，</li>
+<li>或者读到遇到的第一个换行符为止。</li>
+<li>fgets()读到一个换行符，会把它储存在字符串中</li>
+</ul>
+<hr>
+<ul>
+<li>函数的第3 个参数指明要读入的文件。<ul>
+<li>如果读入从键盘输入的数 据，则以stdin（标准输入）作为参数</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>####fputs函数</p>
+<blockquote>
+<p>fputs()函数的第2个参数指明它要写入的文件。</p>
+<ul>
+<li>如果要显示在计算机显示器上，应使用stdout（标准输出）作为该参数</li>
+</ul>
+</blockquote>
+<ul>
+<li>puts()函数返回指向 char的指针</li>
+<li>如果一切进行顺利,该函数返回的地址与传入的第1个参数相同</li>
+<li>但是,如果函数读到文件结尾，它将返回一个特殊的指针：空指针（null pointer）</li>
+<li>该指针保证不会指向有效的数据，所以可用于标识这种特殊情况</li>
+</ul>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include　&lt;stdio.h&gt;</span><br><span class="line">#define　STLEN　14</span><br><span class="line">int　main(void)</span><br><span class="line">&#123;</span><br><span class="line">char　words[STLEN];</span><br><span class="line">puts(&quot;Enter　a　string,　please.&quot;);</span><br><span class="line">fgets(words,　STLEN,　stdin);</span><br><span class="line">printf(&quot;Your　string　twice　(puts(),　then　fputs()):\n&quot;);</span><br><span class="line">puts(words);</span><br><span class="line">fputs(words,　stdout);</span><br><span class="line">puts(&quot;Enter　another　string,　please.&quot;);</span><br><span class="line">fgets(words,　STLEN,　stdin);</span><br><span class="line">printf(&quot;Your　string　twice　(puts(),　then　fputs()):\n&quot;);</span><br><span class="line">puts(words);</span><br><span class="line">fputs(words,　stdout);</span><br><span class="line">puts(&quot;Done.&quot;);</span><br><span class="line">return　0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#include　&lt;stdio.h&gt;</span><br><span class="line">#define　STLEN　10</span><br><span class="line">int　main(void)</span><br><span class="line">&#123;</span><br><span class="line">char　words[STLEN];</span><br><span class="line">int　i;</span><br><span class="line">puts(&quot;Enter　strings　(empty　line　to　quit):&quot;);</span><br><span class="line">while　(fgets(words,　STLEN,　stdin)　!=　NULL　&amp;&amp;　 words[0]　!=　&apos;\n&apos;)</span><br><span class="line">&#123;</span><br><span class="line">i　=　0;</span><br><span class="line">while　(words[i]　!=　&apos;\n&apos;　&amp;&amp;　words[i]　!=　&apos;\0&apos;)</span><br><span class="line">i++;</span><br><span class="line">if　(words[i]　==　&apos;\n&apos;)</span><br><span class="line">words[i]　=　&apos;\0&apos;;</span><br><span class="line">else　// 如果word[i] == &apos;\0&apos;则执行这部分代码</span><br><span class="line">while　(getchar()　!=　&apos;\n&apos;)</span><br><span class="line">continue;</span><br><span class="line">puts(words);</span><br><span class="line">&#125;</span><br><span class="line">puts(&quot;done&quot;);</span><br><span class="line">return　0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>读取整行输入并用空字符 代替换行符，或者读取一部分输入，并丢弃其余部分</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">char * s_gets(char * st, int n)</span><br><span class="line">&#123;</span><br><span class="line">char * ret_val;</span><br><span class="line">int　i　=　0;</span><br><span class="line">ret_val　=　fgets(st,　n,　stdin);</span><br><span class="line">770</span><br><span class="line">if (ret_val)　// 即，ret_val != NULL</span><br><span class="line">&#123;</span><br><span class="line">while　(st[i]　!=　&apos;\n&apos;　&amp;&amp;　st[i]　!=　&apos;\0&apos;)</span><br><span class="line">i++;</span><br><span class="line">if　(st[i]　==　&apos;\n&apos;)</span><br><span class="line">st[i]　=　&apos;\0&apos;;</span><br><span class="line">else</span><br><span class="line">while　(getchar()　!=　&apos;\n&apos;)</span><br><span class="line">continue;</span><br><span class="line">&#125;</span><br><span class="line">return　ret_val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>####gets_s函数<br><strong>gets_s()与fgets()的区别如下</strong></p>
+<ul>
+<li>gets_s()只从标准输入中读取数据，所以不需要第3个参数。</li>
+<li>如果gets_s()读到换行符，会丢弃它而不是储存它。</li>
+<li>如果gets_s()读到最大字符数都没有读到换行符，会执行以下几步<ul>
+<li>首先把目标数组中的首字符设置为空字符，读取并丢弃随后的输入直至读到换行符或文件结尾，然后返回空指针</li>
+<li>接着，调用依赖实现的“处理函数”（或 你选择的其他函数），可能会中止或退出程序</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>####输出函数</p>
+<blockquote>
+<ul>
+<li>gets()丢弃输入中的换行符，但是puts()在输出中添加换行符。</li>
+<li>另 一方面，fgets()保留输入中的换行符，fputs()不在输出中添加换行符</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="strcat-函数"><a href="#strcat-函数" class="headerlink" title="strcat()函数"></a>strcat()函数</h2><blockquote>
+<p>strcat()（用于拼接字符串）函数接受两个字符串作为参数。</p>
+</blockquote>
+<ul>
+<li>该函数把第2个字符串的备份附加在第1个字符串末尾，并把拼接后形成的新字符串作为第1个字符串，第2个字符串不变</li>
+<li>strcat()函数的类型是char *（即，指向char 的指针）</li>
+<li>strcat()函数返回第1个参数，即拼接第2个字符串后的第1个字符串的地址。</li>
 </ul>
 
         </div>
