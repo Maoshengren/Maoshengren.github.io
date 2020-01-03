@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="Huster-Maosr">
 <meta property="og:description" content="数据在内存里是以补码的形式存储的原因有三点：1.保证了0的唯一性，保证了数的表示的准确性。 2.让加减可以统一处理，优化了数的运算过程。 3.解决了自身逻辑意义的完整性。  不同的进制要使用不同 的转换说明。以十进制显示数字，使用%d；以八进制显示数字，使用%o； 以十六进制显示数字，使用%x。另外，要显示各进制数的前缀0、0x和0X， 必须分别使用%#o、%#x、%#X。  scanf()返回成">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-12T01:13:32.150Z">
+<meta property="og:updated_time" content="2019-12-26T13:32:58.703Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言学习">
 <meta name="twitter:description" content="数据在内存里是以补码的形式存储的原因有三点：1.保证了0的唯一性，保证了数的表示的准确性。 2.让加减可以统一处理，优化了数的运算过程。 3.解决了自身逻辑意义的完整性。  不同的进制要使用不同 的转换说明。以十进制显示数字，使用%d；以八进制显示数字，使用%o； 以十六进制显示数字，使用%x。另外，要显示各进制数的前缀0、0x和0X， 必须分别使用%#o、%#x、%#X。  scanf()返回成">
@@ -669,7 +669,7 @@
 </li>
 </ul>
 </li>
-<li><p>遍历链表时，为何不直接使用head指针，而要重新创建一个新指针 （current）？因为如果使用head会改变head中的值，程序就找不到链表的开<br>始处。</p>
+<li><p>遍历链表时，为何不直接使用head指针，而要重新创建一个新指针 （current）？因为如果使用head会改变head中的值，程序就找不到链表的开始处。</p>
 </li>
 <li><p>创建链表<br>创建链表涉及下面3步：</p>
 <ul>
@@ -677,6 +677,65 @@
 <li>储存结构的地址；</li>
 <li>把当前信息拷贝到结构中。</li>
 </ul>
+</li>
+</ul>
+<hr>
+<h2 id="文件输入输出"><a href="#文件输入输出" class="headerlink" title="文件输入输出"></a>文件输入输出</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fscanf(fp, &quot;%s&quot;, words) </span><br><span class="line">fprintf(fp, &quot;%s\n&quot;, words)</span><br><span class="line">fscanf(stdin, &quot;%40s&quot;, words)</span><br></pre></td></tr></table></figure>
+
+<p>####fgets</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">它的第1个参数和gets()函数一样，也是表示储存输入位置的地址（char * 类型）</span><br><span class="line">第2个参数是一个整数，表示待输入字符串的大小[1]</span><br><span class="line">最后一个参数是文件指针，指定待读取的文件。下面 是一个调用该函数的例子：</span><br><span class="line">fgets(buf, STLEN, fp);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fgets()函数读取输入直到第1个换行符的后面</li>
+<li>或读到文件结尾</li>
+<li>或者读取STLEN-1 个字符（以上面的 fgets()为例）。<ul>
+<li>fgets()在末尾添加一个空字符使之成为一个字符串</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>####fputs</p>
+<ul>
+<li>fputs()函数接受两个参数：第1个是字符串的地址；第2个是文件指针</li>
+</ul>
+<hr>
+<p>####fseek()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fseek()的第1个参数是FILE指针，指向待查找的文件，fopen()应该已打 开该文件。</span><br><span class="line">fseek()的第2个参数是偏移量（offset）。该参数表示从起始点开始要移 动的距离（参见表13.3列出的起始点模式）。该参数必须是一个long类型的 值，可以为正（前移）、负（后移）或0（保持不动）。</span><br><span class="line">fseek()的第3个参数是模式，该参数确定起始点</span><br></pre></td></tr></table></figure>
+
+<p>####ftell()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ftell()函数的返回类型是long，它返回的是当前的位置。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>####fwrite()</p>
+<ul>
+<li><p>size_t是根据标准C类型定义的类 型，它是sizeof运算符返回的类型，通常是unsigned int</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fwrite()函数的原型如下：</span><br><span class="line">size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb,FILE * restrict fp);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fwrite()函数把二进制数据写入文件<ul>
+<li>指针ptr是待写入数据块的地址</li>
+<li>size表示待写入数据块的大 小（以字节为单位）</li>
+<li>nmemb表示待写入数据块的数量</li>
+<li>fp指定待写入的文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>####fread()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">size_t fread()函数的原型如下：</span><br><span class="line">size_t fread(void * restrict ptr, size_t size, size_t nmemb,FILE * restrict fp);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>fread()函数接受的参数和fwrite()函数相同</p>
+<ul>
+<li>在fread()函数中，ptr是待读取文件数据在内存中的地址，fp指定待读取的文件。</li>
+<li>该函数用于读取被fwrite()写入文件的数据。</li>
+<li>例如，要恢复上例中保存的内含10个double类型值的数组，可以这样做：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">double earnings[10];</span><br><span class="line">fread(earnings, sizeof (double), 10, fp);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>该调用把10个double大小的值拷贝进earnings数组中。</p>
 </li>
 </ul>
 
@@ -724,7 +783,7 @@
         <!--请您保留作者署名, 主题制作来之不易-->
         Theme by <a href="https://github.com/haojen">Haojen Ma</a>
         <br>
-        Copyright © Maosr 2019
+        Copyright © Maosr 2020
         <br>
         Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
       </div>
