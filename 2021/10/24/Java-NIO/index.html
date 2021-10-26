@@ -542,9 +542,7 @@
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<img src="/2021/10/24/Java-NIO/image-20211024112633666.png" alt="" style="zoom:50%;">
-
+<p><img src="/2021/10/24/Java-NIO/image-20211024112633666.png" alt style="zoom:50%;"></p>
 <blockquote>
 <p>这是一个经典的每连接每线程的模型，之所以使用多线程，主要原因在于 <code>socket.accept()</code>、<code>socket.read()</code>、<code>socket.write()</code>三个主要函数都是同步阻塞的，当一个连接在处理 I/O 的时候，系统是阻塞的，如果是单线程的话必然就挂死在那里。</p>
 <p>这也是为什么在做计网实验的时候单线程只能处理一次请求，如果再次发出请求服务器根本不会响应，因为服务器被阻塞在读写了。</p>
@@ -567,34 +565,38 @@
 <blockquote>
 <p>NIO<strong>只有在连接/通道真正有读写事件</strong>发生时(<strong>事件驱动</strong>)，<strong>才会进行读写</strong>，这就大大地减少了系统的开销。</p>
 </blockquote>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">NIO的核心</th>
-<th align="left">对应的类或接口</th>
-<th align="left">应用</th>
-<th align="left">作用</th>
+<th style="text-align:left">NIO的核心</th>
+<th style="text-align:left">对应的类或接口</th>
+<th style="text-align:left">应用</th>
+<th style="text-align:left">作用</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">缓冲区</td>
-<td align="left"><code>Buffer</code></td>
-<td align="left">文件IO/网络IO</td>
-<td align="left">存储数据</td>
+<tbody>
+<tr>
+<td style="text-align:left">缓冲区</td>
+<td style="text-align:left"><code>Buffer</code></td>
+<td style="text-align:left">文件IO/网络IO</td>
+<td style="text-align:left">存储数据</td>
 </tr>
 <tr>
-<td align="left">通道</td>
-<td align="left"><code>Channel</code></td>
-<td align="left">文件IO/网络IO</td>
-<td align="left">运输</td>
+<td style="text-align:left">通道</td>
+<td style="text-align:left"><code>Channel</code></td>
+<td style="text-align:left">文件IO/网络IO</td>
+<td style="text-align:left">运输</td>
 </tr>
 <tr>
-<td align="left">选择器</td>
-<td align="left"><code>Selector</code></td>
-<td align="left">网络IO</td>
-<td align="left">控制器</td>
+<td style="text-align:left">选择器</td>
+<td style="text-align:left"><code>Selector</code></td>
+<td style="text-align:left">网络IO</td>
+<td style="text-align:left">控制器</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="单线程-Reactor"><a href="#单线程-Reactor" class="headerlink" title="单线程 Reactor"></a><strong>单线程 <code>Reactor</code></strong></h3><blockquote>
 <p><code>Reactor</code> 模型中定义的三种角色：</p>
 </blockquote>
@@ -634,13 +636,11 @@
     <span class="token comment">//所有channel的对应事件处理器</span>
     <span class="token class-name">Map</span><span class="token operator">&lt;</span><span class="token class-name">Channel</span>，<span class="token class-name">ChannelHandler</span><span class="token operator">&gt;</span> handlerMap<span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <blockquote>
 <p>这也是最简单的 <code>Reactor</code> 模式：注册所有感兴趣的事件处理器，单线程轮询选择就绪事件，执行事件处理器。 </p>
 <p>NIO由原来的阻塞读写（占用线程）变成了单线程轮询事件，找到可以进行读写的网络描述符进行读写。除了事件的轮询是阻塞的（没有可干的事情必须要阻塞），剩余的I/O操作都是纯CPU操作，没有必要开启多线程。</p>
 </blockquote>
-<img src="/2021/10/24/Java-NIO/image-20211021165753294-16350547783021.png" alt="" style="zoom:40%;">
-
+<p><img src="/2021/10/24/Java-NIO/image-20211021165753294-16350547783021.png" alt style="zoom:40%;"></p>
 <p><code>Reactor</code> 处理请求的流程：</p>
 <ol>
 <li><code>Reactor</code> 对象通过 <code>select</code> 监控连接事件，收到事件后通过 <code>dispatch</code> 进行转发。</li>
@@ -660,10 +660,9 @@
 <p>（1）将 <code>Handler</code> 处理器的执行放入线程池，多线程进行业务处理。 </p>
 <p>（2）而对于 <code>Reactor</code> 而言，可以仍为单个线程。如果服务器为多核的CPU，为充分利用系统资源，可以将 <code>Reactor</code> 拆分为两个线程。</p>
 </blockquote>
-<img src="/2021/10/24/Java-NIO/v2-22efc734724d07251f8293e2f1143639_720w.png" alt="" style="zoom: 67%;">
-
+<p><img src="/2021/10/24/Java-NIO/v2-22efc734724d07251f8293e2f1143639_720w.png" alt style="zoom: 67%;"></p>
 <p>下图是 <code>netty in action</code> 中关于NIO的流程图。</p>
-<p><img src="/2021/10/24/Java-NIO/image-20211022204547930.png"></p>
+<p><img src="/2021/10/24/Java-NIO/image-20211022204547930.png" alt></p>
 <p>多线程 <code>Reactor</code> 消息处理流程：</p>
 <ol>
 <li>从主线程池中随机选择一个 <code>Reactor</code> 线程作为 <code>acceptor</code> 线程，用于绑定监听端口，接收客户端连接</li>
@@ -672,10 +671,9 @@
 <li>当有新的事件发生时，<code>SubReactor</code> 会调用连接对应的 <code>Handler</code> 进行响应</li>
 <li><code>Handler</code> 通过 <code>Read</code> 读取数据后，会分发给后面的 <code>Worker</code> 线程池进行业务处理</li>
 <li><code>Worker</code> 线程池会分配独立的线程完成真正的业务处理，如何将响应结果发给 <code>Handler</code> 进行处理</li>
-<li><code> Handler</code> 收到响应结果后通过 <code>Send</code> 将响应结果返回给 <code>Client</code> </li>
+<li><code>Handler</code> 收到响应结果后通过 <code>Send</code> 将响应结果返回给 <code>Client</code> </li>
 </ol>
-<img src="/2021/10/24/Java-NIO/image-20211024141840397.png" alt="" style="zoom:50%;">
-
+<p><img src="/2021/10/24/Java-NIO/image-20211024141840397.png" alt style="zoom:50%;"></p>
 <blockquote>
 <p><code>Reactor</code> 模式在 IO 读写数据时还是在同一个线程中实现的，即使使用多个 <code>Reactor</code> 机制的情况下，那些共享一个 <code>Reactor</code> 的 <code>Channel</code> 如果出现一个<strong>长时间的数据读写</strong>，会影响这个 <code>Reactor</code> 中其他<code>Channel</code> 的相应时间，比如在大文件传输时，IO操作就会影响其他Client的相应时间，因而对这种操作，使用传统的 <code>Thread-Per-Connection</code> 或许是一个更好的选择，或则此时使用改进版的<code>Reactor</code> 模式如 <code>Proactor</code> 模式。</p>
 </blockquote>
@@ -683,7 +681,7 @@
 <p><code>Reactor</code> 模型用于同步I/O，而 <code>Proactor</code> 模型运用于异步I/O操作。 </p>
 </blockquote>
 <p><strong>模型</strong></p>
-<p><img src="/2021/10/24/Java-NIO/v2-35bd4bdf3b12246fb005415d3a29ecc0_r.jpg"></p>
+<p><img src="/2021/10/24/Java-NIO/v2-35bd4bdf3b12246fb005415d3a29ecc0_r.jpg" alt></p>
 <p><strong>模块关系</strong> </p>
 <ol>
 <li><code>Procator Initiator</code>负责创建<code>Procator</code>和<code>Handler</code>，并将<code>Procato</code>r和<code>Handler</code>都通过<code>Asynchronous operation processor</code>注册到内核。</li>
@@ -732,7 +730,6 @@
             workerGroup<span class="token punctuation">.</span><span class="token function">shutdownGracefully</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ul>
 <li>定义了两个<code>EventLoopGroup</code>，其中<code>bossGroup</code>对应的就是主线程池，只接收客户端的连接（注册，初始化逻辑），具体的工作由<code>workerGroup</code>这个从线程池来完成。</li>
 <li>客户端和服务器建立连接后，NIO会在两者之间建立<code>Channel</code>，所以启动类调用<code>channel</code>方法就是为了指定建立什么类型的通道。</li>
@@ -746,11 +743,10 @@
 </blockquote>
 <p><strong>Netty三大组件</strong></p>
 <p><code>Channel</code>接口提供了一个API，大大降低了直接使用<code>Sockets</code>的复杂性。当创建<code>Channel</code>时，它会自动分配自己的<code>ChannelPipeline</code>。<code>ChannelPipeline</code>中含有一些<code>ChannelHandlers</code>，用于用户自定义处理事件。数据通过<code>Channel</code>在各个<code>Handler</code>之间流动。</p>
-<p><img src="/2021/10/24/Java-NIO/image-20211024185955001.png"></p>
+<p><img src="/2021/10/24/Java-NIO/image-20211024185955001.png" alt></p>
 <p><code>EventLoop</code>定义了Netty的核心抽象，用于处理在连接生命周期内发生的事件。<code>Channel</code>在其生命周期内注册为一个<code>EventLoop</code>。一个<code>EventLoop</code>可以被分配给一个或多个<code>Channel</code>。</p>
 <p>关系如下图所示：</p>
-<img src="/2021/10/24/Java-NIO/image-20211024185355812.png" alt="">
-
+<p><img src="/2021/10/24/Java-NIO/image-20211024185355812.png" alt></p>
 <p>Netty中的所有I/O操作都是<strong>异步</strong>的。因为一个操作可能不会立即返回，所以我们需要一种方法在以后确定它的结果。为此，Netty提供了<code>ChannelFuture</code>，其<code>addListener()</code>方法注册一个<code>ChannelFutureListener</code>，当<strong>操作完成时通知</strong>它(无论是否成功)。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">channelFuture<span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ChannelProgressiveFutureListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token annotation punctuation">@Override</span>
@@ -767,7 +763,6 @@
         <span class="token class-name">System</span><span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>future<span class="token punctuation">.</span><span class="token function">channel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" Transfer complete."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>上面的代码就是通过添加 <code>FutureListener</code> 实现I/O操作完成后在Console中打印信息的功能。</p>
 <hr>
 <p>参考：</p>
@@ -804,7 +799,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://Maoshengren.github.io/2021/10/24/Java-NIO/">http://Maoshengren.github.io/2021/10/24/Java-NIO/</a>
+                    <a href="http://Maoshengren.github.io/2021/10/24/java-nio/">http://Maoshengren.github.io/2021/10/24/java-nio/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1021,7 +1016,7 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/10/24/Netty-%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/">
+                <a href="/2021/10/24/netty-xian-cheng-mo-xing/">
                     <div class="card-image">
                         
                         
@@ -1058,7 +1053,7 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/10/23/deploy_problem/">
+                <a href="/2021/10/23/deploy-problem/">
                     <div class="card-image">
                         
                         
