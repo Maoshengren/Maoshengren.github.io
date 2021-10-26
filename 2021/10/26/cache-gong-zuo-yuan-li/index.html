@@ -476,14 +476,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    638
+                    2.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    9 分
                 </div>
                 
 
@@ -506,7 +506,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Cache工作原理"><a href="#Cache工作原理" class="headerlink" title="Cache工作原理"></a>Cache工作原理</h2><h3 id="Cache基本概念"><a href="#Cache基本概念" class="headerlink" title="Cache基本概念"></a>Cache基本概念</h3><blockquote>
+                <h2 id="Cache工作原理"><a href="#Cache工作原理" class="headerlink" title="Cache工作原理"></a>Cache工作原理</h2><h3 id="1-Cache基本概念"><a href="#1-Cache基本概念" class="headerlink" title="1. Cache基本概念"></a>1. Cache基本概念</h3><blockquote>
 <p>为提升CPU访问主存的性能，通常会在CPU和主存之间增加一个隐藏的小容量快速<code>SRAM</code>，称为 <code>cache</code>。将主存中经常访问或即将访问的数据的副本调度到小容量的 <code>SRAM</code> 中，使得大部分数据访问都可以在其中进行，从而提升性能。</p>
 </blockquote>
 <ul>
@@ -515,7 +515,7 @@
 <li>如果数据不在 <code>cache</code> 中，则称为<strong>数据丢失(cache miss)</strong>，需要将缺失的数据从主存调入 <code>cache</code> 中；数据缺失的访问时间称为<strong>缺失补偿(miss penalty)</strong>，包括数据查找时间、主存访问时间、<code>cache</code> 访问时间，通常用主存访问时间 $t_m$ 表示。</li>
 </ul>
 </li>
-<li>为了便于比较和快速查找，<code>cache</code> 和主存都被分成若干个固定大小的<strong>块</strong>，每个块包含若干<strong>字</strong>，数据缺失时将<strong>数据所在块</strong>载入 <code>cache</code> 中 (这种预读策略可以充分利用空间局部性，提高顺序访问的命中概率)。<ul>
+<li>为了便于比较和快速查找，<code>cache</code> 和主存都被分成若干个固定大小的<strong>块</strong>，每个块包含若干<strong>字</strong>，数据缺失时将<strong>数据所在块</strong>载入 <code>cache</code> 中 [这种预读策略可以充分利用空间局部性，提高顺序访问的命中概率]。<ul>
 <li>块过小无法使<strong>预读策略</strong>优化<a href="#程序局部性">空间局部性</a>，块过大使<strong>替换算法</strong>无法利用<a href="#程序局部性">时间局部性</a>。</li>
 </ul>
 </li>
@@ -534,10 +534,179 @@ t_a=ht_c+(1-h)t_m,\;\;cache 目的是使t_a\rightarrow t_c</script><p> $e=t_c/t_
 e=\frac{t_c}{t_a}=\frac{1}{h+(1-h)r}</script><p>显然访问效率 $e $ 与 $r$ 和 $h$ 中有关。</p>
 </li>
 </ul>
-<h3 id="程序局部性"><a href="#程序局部性" class="headerlink" title="程序局部性"></a>程序局部性</h3><blockquote>
+<hr>
+<h3 id="2-程序局部性"><a href="#2-程序局部性" class="headerlink" title="2. 程序局部性"></a>2. 程序局部性</h3><blockquote>
 <p><strong>时间局部性</strong>：当程序访问一个存储位置时，该位置在未来可能会被多次访问。比如程序的循环结构和调用过程。</p>
 <p><strong>空间局部性</strong>：一旦程序访问了某个存储单元，则其附近的存储单元也即将被访问。如指令代码、数组、结构体等顺序存放的结构。</p>
 </blockquote>
+<hr>
+<h3 id="3-Cache-读写流程"><a href="#3-Cache-读写流程" class="headerlink" title="3.  Cache 读写流程"></a>3.  <code>Cache</code> 读写流程</h3><p><code>Cache</code> 读流程较为简单，略过。</p>
+<p><code>Cache</code> 写流程：</p>
+<p><img src="/2021/10/26/cache-gong-zuo-yuan-li/image-20211026151655241.png" style="zoom:67%;"></p>
+<p>数据缺失时有两种不同策略：</p>
+<ul>
+<li>若为<strong>写分配法</strong>，则需将 <code>WA</code> 对应的数据块载入 <code>Cache</code> 中，再进行写命中相同流程。</li>
+<li>若不为写分配法，则将数据写入主存即返回。</li>
+</ul>
+<p>新写入 <code>Cache</code> 的数据域主存数据不一致，称为<strong>脏数据</strong>。</p>
+<p>数据写入完成后：</p>
+<ul>
+<li>若为<strong>写回策略</strong>，则写入操作结束，这种方式响应最快，但会产生不一致性。</li>
+<li><p>若为<strong>写穿策略</strong>，则需将脏数据写入主存后返回，响应速度慢，但不会产生不一致性。</p>
+<p><code>Cache</code> 实现的关键技术</p>
+</li>
+<li><p>数据查找：快速判断数据是否在 <code>Cache</code> 中</p>
+</li>
+<li>地址映射：主存数据块如何放置到 <code>Cache</code> 中</li>
+<li>替换策略： <code>Cache</code> 满后如何替换数据块</li>
+<li>写入策略：如何保证 <code>Cache</code> 与主存一致性</li>
+</ul>
+<hr>
+<h3 id="4-地址映射"><a href="#4-地址映射" class="headerlink" title="4. 地址映射"></a>4. 地址映射</h3><blockquote>
+<p>将主存地址空间映射到 <code>Cache</code> 地址空间，即载入 <code>Cache</code> 块的规则。</p>
+<ul>
+<li><strong>全相联</strong>：主存块可以映射到 <code>Cache</code> 任意数据块</li>
+<li><strong>直接相联</strong>：主存块只能映射到 <code>Cache</code> 中固定块</li>
+<li><strong>组相联</strong>：主存块只能映射到 <code>Cache</code> 固定组中的任意块</li>
+</ul>
+</blockquote>
+<h4 id="4-1-全相联映射"><a href="#4-1-全相联映射" class="headerlink" title="4.1 全相联映射"></a>4.1 全相联映射</h4><blockquote>
+<p>新的主存块可以载入 <code>Cache</code> 中任何一个空位置，只有 <code>Cache</code> 满时才进行数据块置换。</p>
+<p> <code>Cache</code> 利用率最高，查找成本较高，CAM提供查找功能。</p>
+</blockquote>
+<ul>
+<li>由于主存块可以放置在任意块中，为方便查找，需记录 有效位、主存块地址标记、脏数据标志位、淘汰计数等。</li>
+<li>通常将一个 <code>Cache</code> 数据块和标志信息一起称为一个 <code>Cache</code>行/槽，有多少 <code>Cache</code> 数据块对应有多少 <code>Cache</code> 行。</li>
+</ul>
+<blockquote>
+<p>主存地址划分为块地址(<strong>tag</strong>)和块内偏移地址(<strong>offset</strong>)两部分，长度分别为 $s,w$， <code>Cache</code> 块大小为 $2^w$ 字节， <code>Cache</code> 缓冲区容量为 $n\times 2^w$ 字节，只考虑有效位和主存块地址， <code>Cache</code> 实际容量为 $n\times (1+s+8\times 2^w)$，主存容量为 $2^{s+w}$ 字节。</p>
+</blockquote>
+<p><img src="/2021/10/26/cache-gong-zuo-yuan-li/image-20211026154708162.png" style="zoom:67%;"></p>
+<p>全相联映射访问过程：主存 <code>tag</code> 字段将与所以行中 <code>tag</code> 字段进行比较</p>
+<ul>
+<li><code>valid</code> 有效位必须设置为1</li>
+<li><code>tag</code> 必须与主存 <code>tag</code> 匹配</li>
+<li>3位 <code>offset</code> 决定选中哪一个字</li>
+</ul>
+<p><img src="/2021/10/26/cache-gong-zuo-yuan-li/image-20211026155124123.png" alt=""></p>
+<blockquote>
+<p>全相联映射方式特点：</p>
+<ul>
+<li>主存块映射到  <code>Cache</code> 任意一行， <code>Cache</code> 利用率高</li>
+<li><code>Cache</code> 有空行就可以插入， <code>Cache</code> 冲突率低</li>
+<li>查找需要并发查找每一行，硬件成本高，只适合小容量 <code>Cache</code> </li>
+<li><code>Cache</code> 满时需进行替换，替换算法复杂</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="4-2-直接相联映射"><a href="#4-2-直接相联映射" class="headerlink" title="4.2 直接相联映射"></a>4.2 直接相联映射</h4><blockquote>
+<p>每一个主存地址只能映射到 <code>Cache</code> 固定行，映射规则为：</p>
+<p>$cache 行号\;i=主存块号\; j\mod(cache 行数 \;n)$ </p>
+<p>等效于将<strong>主存块</strong>分为与 <code>Cache</code> 行数相同的分区，因此主存地址分为：区地址 [<code>tag</code>]，区内行索引 [<code>index</code>]，块内偏移地址 [<code>offset</code>]。</p>
+</blockquote>
+<p>直接相联映射访问过程：</p>
+<ul>
+<li><code>index</code> 字段选中对应的 <code>Cache</code> 行 </li>
+<li><code>valid</code> 有效位必须设置为1</li>
+<li><code>tag</code> 必须与主存 <code>tag</code> 匹配</li>
+<li>3位 <code>offset</code> 决定选中哪一个字</li>
+</ul>
+<blockquote>
+<p>直接相联映射的特点：</p>
+<ul>
+<li>主存块只能映射到  <code>Cache</code> 中固定行， <code>Cache</code> 利用率低，命中率低</li>
+<li><code>index</code> 相同的主存块映射 <code>Cache</code> 同一行， <code>Cache</code> 冲突率高 [小声bb：冲突率高不就是利用率低吗，跟第一条差不多]</li>
+<li>查找只需与对应行的标记字段 <code>tag</code> 进行比较，硬件成本低</li>
+<li>无须使用复杂替换算法</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="4-3-组相联映射"><a href="#4-3-组相联映射" class="headerlink" title="4.3 组相联映射"></a>4.3 组相联映射</h4><blockquote>
+<p> <code>Cache</code> 分成固定大小的组，每组有 $k$ 行，称为 $k-$路组相联，主存数据先采用<strong>直接相联映射</strong>定位到 <code>Cache</code> 固定的组，再采用<strong>全相联映射</strong>到组内任意 <code>Cache</code> 行。组相联映射规则：</p>
+<p>$cache \; 组号=主存块号\mod (cache组数)$ </p>
+</blockquote>
+<p> <code>Cache</code> 模型：</p>
+<p><img src="/2021/10/26/cache-gong-zuo-yuan-li/image-20211026160747150.png" style="zoom:67%;"></p>
+<p> 组相联<code>Cache</code>映射方式： </p>
+<p><img src="/2021/10/26/cache-gong-zuo-yuan-li/image-20211026160910295.png" style="zoom:67%;"></p>
+<p>组相联映射访问过程：</p>
+<ul>
+<li><code>index</code> 字段选中对应的 <code>Cache</code> 行 <ul>
+<li>组中的任何一行都可以包含映射到这个组的任何内存块。 因此缓存必须搜索组中的每一行，搜索其标记与地址中的标记匹配的有效行。 如果缓存找到这样的一行，那么就有一个 hit。</li>
+</ul>
+</li>
+<li><code>valid</code> 有效位必须设置为1</li>
+<li><code>tag</code> 必须与主存 <code>tag</code> 匹配</li>
+<li>3位 <code>offset</code> 决定选中哪一个字</li>
+</ul>
+<p><img src="/2021/10/26/cache-gong-zuo-yuan-li/image-20211026161308510.png" alt=""></p>
+<blockquote>
+<p>组相联映射的特点：</p>
+<ul>
+<li>每一组多路比较器大幅减少，为各 <code>Cache</code> 共享，硬件成本更低</li>
+<li>每组只有一个 <code>Cache</code> 行时，变成直接相联映射</li>
+<li>整个 <code>Cache</code> 只有一组时，变成全相联映射</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="5-替换算法"><a href="#5-替换算法" class="headerlink" title="5. 替换算法"></a>5. 替换算法</h3><blockquote>
+<p>替换算法与 <code>Cache</code> 组织方式相关：</p>
+<p>直接相联映射不需要替换算法，因为一个主存块只能存放在一个特定行；</p>
+<p>全相联映射执行替换算法时涉及所有行；</p>
+<p>组相联映射执行替换算法设计特定组的所有行。</p>
+</blockquote>
+<h4 id="5-1-FIFO算法"><a href="#5-1-FIFO算法" class="headerlink" title="5.1 FIFO算法"></a>5.1 FIFO算法</h4><blockquote>
+<p><strong>先进先出算法</strong>按照数据块进入 <code>Cache</code> 先后决定替换顺序，需要替换时，最先被载入的 <code>Cache</code> 行被替换。</p>
+<p>需记录每个 <code>Cache</code> 行载入 <code>Cache</code> 的时间戳</p>
+<p>特点：</p>
+<ul>
+<li>系统开销较小，但不考虑程序访问的局部性，有可能导致 <code>Cache</code> 命中率低</li>
+</ul>
+</blockquote>
+<h4 id="5-2-LFU算法"><a href="#5-2-LFU算法" class="headerlink" title="5.2 LFU算法"></a>5.2 LFU算法</h4><blockquote>
+<p><strong>最不经常使用算法</strong>将访问次数最少的 <code>Cache</code> 行替换，每行需设置淘汰计数器，新载入 <code>Cache</code> 行为0，每命中一次计数器+1，替换时对所有可能替换行的计数值比较，<strong>计数值最小</strong>的替换。</p>
+<p>特点：</p>
+<ul>
+<li>计数器统计 <code>Cache</code> 启动后至今的访问次数，不能反映近期访问情况。</li>
+</ul>
+</blockquote>
+<h4 id="5-3-LRU算法"><a href="#5-3-LRU算法" class="headerlink" title="5.3 LRU算法"></a>5.3 LRU算法</h4><blockquote>
+<p><strong>近期最少使用算法</strong>将近期最久未访问的 <code>Cache</code> 行进行替换。也需设置计数器， <code>Cache</code> 命中行计数器清0，其余行+1，替换时对所有可能替换行的计数值比较，<strong>计数值最大</strong>的替换。</p>
+<p>特点：</p>
+<ul>
+<li>保护了刚载入 <code>Cache</code> 的新数据，符合<code>Cache</code> 工作原理，有较高命中率。</li>
+<li>实现难点为比较多行计数器，2-路组相联 <code>Cache</code> 能大大简化情况。</li>
+</ul>
+</blockquote>
+<h4 id="5-4-随机替换算法"><a href="#5-4-随机替换算法" class="headerlink" title="5.4 随机替换算法"></a>5.4 随机替换算法</h4><blockquote>
+<p> <strong>随机替换算法</strong>对特定的行中随机选取一行进行替换。</p>
+<p>特点：</p>
+<ul>
+<li>硬件实现最容易，速度快。</li>
+<li>随意换出的数据可能即将访问，降低命中率。负面影响随着 <code>Cache</code> 增大而减小。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="6-写入策略"><a href="#6-写入策略" class="headerlink" title="6. 写入策略"></a>6. 写入策略</h3><h4 id="写回法（Write-Back）"><a href="#写回法（Write-Back）" class="headerlink" title="写回法（Write-Back）"></a>写回法（Write-Back）</h4><blockquote>
+<p>CPU对 <code>Cache</code> 写命中时，只修改 <code>Cache</code> 内容，不立即写入主存，只有此行被替换时才将脏数据写回主存。</p>
+</blockquote>
+<ul>
+<li>这种策略使 <code>Cache</code> 在读写操作均起到高速缓存作用。</li>
+<li>每个 <code>Cache</code> 行必须有一个修改位，即脏位（dirty bit），改写过则为1，未改写则为0</li>
+<li>由于不一致性，DMA操作可能获得的是旧数据</li>
+</ul>
+<h4 id="写穿法（Write-Through）"><a href="#写穿法（Write-Through）" class="headerlink" title="写穿法（Write-Through）"></a>写穿法（Write-Through）</h4><blockquote>
+<p>又称直写法， <code>Cache</code> 命中时，同时对 <code>Cache</code> 和主存中同一数据块进行修改。 <code>Cache</code> 无需脏位，替换时可直接替换。</p>
+</blockquote>
+<ul>
+<li>在多核CPU下，每个核都有对应 <code>Cache</code> ，因此即使写穿法也无法保证 <code>Cache</code> 同步更新。</li>
+</ul>
+<hr>
+<p>以上就是关于 <code>Cache</code> 的全部内容，若还有知识点再进行补充。</p>
+<hr>
+<p>参考：</p>
+<p>计算机组成原理（微课版），大萝卜</p>
+<p>CSAPP（3rd edition）</p>
 
                 
             </div>
@@ -1069,7 +1238,7 @@ e=\frac{t_c}{t_a}=\frac{1}{h+(1-h)r}</script><p>显然访问效率 $e $ 与 $r$ 
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">4.4k</span>&nbsp;字
+                class="white-color">6.3k</span>&nbsp;字
             
             
             
