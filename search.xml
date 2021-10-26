@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Cache工作原理</title>
+      <link href="/2021/10/26/Cache%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"/>
+      <url>/2021/10/26/Cache%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Cache工作原理"><a href="#Cache工作原理" class="headerlink" title="Cache工作原理"></a>Cache工作原理</h2><h3 id="Cache基本概念"><a href="#Cache基本概念" class="headerlink" title="Cache基本概念"></a>Cache基本概念</h3><blockquote><p>为提升CPU访问主存的性能，通常会在CPU和主存之间增加一个隐藏的小容量快速<code>SRAM</code>，称为 <code>cache</code>。将主存中经常访问或即将访问的数据的副本调度到小容量的 <code>SRAM</code> 中，使得大部分数据访问都可以在其中进行，从而提升性能。</p></blockquote><ul><li>CPU通过字节地址访问快速的 <code>cache</code>，通过一定查找机制判断数据是否在 <code>cache</code> 中<ul><li>如果数据在 <code>cache</code> 中，则称为<strong>数据命中(cache hit)<strong>，</strong>命中访问时间</strong>为 $t_c$，包括查找时间和 <code>cache</code> 访问时间</li><li>如果数据不在 <code>cache</code> 中，则称为**数据丢失(cache miss)<strong>，需要将缺失的数据从主存调入 <code>cache</code> 中；数据缺失的访问时间称为</strong>缺失补偿(miss penalty)**，包括数据查找时间、主存访问时间、<code>cache</code> 访问时间，通常用主存访问时间 $t_m$ 表示。</li></ul></li><li>为了便于比较和快速查找，<code>cache</code> 和主存都被分成若干个固定大小的<strong>块</strong>，每个块包含若干<strong>字</strong>，数据缺失时将<strong>数据所在块</strong>载入 <code>cache</code> 中 (这种预读策略可以充分利用空间局部性，提高顺序访问的命中概率)。<ul><li>块过小无法使<strong>预读策略</strong>优化<a href="#%E7%A8%8B%E5%BA%8F%E5%B1%80%E9%83%A8%E6%80%A7">空间局部性</a>，块过大使<strong>替换算法</strong>无法利用<a href="#%E7%A8%8B%E5%BA%8F%E5%B1%80%E9%83%A8%E6%80%A7">时间局部性</a>。</li></ul></li><li>数据分块后，地址可以分为<strong>块地址</strong>和<strong>偏移地址</strong>， <code>cache</code> 容量较小，因此主存地址字段长度大于 <code>cache</code> 地址字段长度。</li></ul><p><strong>命中率</strong>（评价 <code>cache</code> 性能）</p><ul><li><p>设 $N_c$ 为运行期间命中 <code>cache</code> 次数，$N_m$ 为从主存访问次数，命中率 $h$ 为：<br>$$<br>h = \frac{N_c}{N_c+N_m}, ;;h\rightarrow1,;性能越好<br>$$<br>$1-h$ 称为<strong>缺失率</strong>。</p></li><li><p>$t_c$ 表示命中访问时间，$t_m$ 表示缺失访问时间，平均访问时间 $t_a$ 为<br>$$<br>t_a=ht_c+(1-h)t_m,;;cache 目的是使t_a\rightarrow t_c<br>$$<br> $e=t_c/t_a$ 为<strong>访问效率</strong>，$r=t_m/t_c$ 为主存相对 <code>caceh</code> 访问时间的倍数，<br>$$<br>e=\frac{t_c}{t_a}=\frac{1}{h+(1-h)r}<br>$$<br>显然访问效率 $e $ 与 $r$ 和 $h$ 中有关。</p></li></ul><h3 id="程序局部性"><a href="#程序局部性" class="headerlink" title="程序局部性"></a>程序局部性</h3><blockquote><p><strong>时间局部性</strong>：当程序访问一个存储位置时，该位置在未来可能会被多次访问。比如程序的循环结构和调用过程。</p><p><strong>空间局部性</strong>：一旦程序访问了某个存储单元，则其附近的存储单元也即将被访问。如指令代码、数组、结构体等顺序存放的结构。</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机组成原理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计组 </tag>
+            
+            <tag> Cache </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Netty 线程模型</title>
       <link href="/2021/10/24/Netty-%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/"/>
       <url>/2021/10/24/Netty-%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>

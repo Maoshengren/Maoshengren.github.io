@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Netty 线程模型, MAOSR">
+    <meta name="keywords" content="Cache工作原理, MAOSR">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Netty 线程模型 | MAOSR</title>
+    <title>Cache工作原理 | MAOSR</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Netty 线程模型</h1>
+                    <h1 class="description center-align post-title">Cache工作原理</h1>
                 </div>
             </div>
         </div>
@@ -431,12 +431,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E8%AE%A1%E7%BB%84/">
+                                <span class="chip bg-color">计组</span>
+                            </a>
+                        
+                            <a href="/tags/Cache/">
+                                <span class="chip bg-color">Cache</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" class="post-category">
+                                计算机组成原理
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -445,28 +462,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-10-24
+                    2021-10-26
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-10-25
+                    2021-10-26
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    638
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -489,7 +506,33 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="Cache工作原理"><a href="#Cache工作原理" class="headerlink" title="Cache工作原理"></a>Cache工作原理</h2><h3 id="Cache基本概念"><a href="#Cache基本概念" class="headerlink" title="Cache基本概念"></a>Cache基本概念</h3><blockquote>
+<p>为提升CPU访问主存的性能，通常会在CPU和主存之间增加一个隐藏的小容量快速<code>SRAM</code>，称为 <code>cache</code>。将主存中经常访问或即将访问的数据的副本调度到小容量的 <code>SRAM</code> 中，使得大部分数据访问都可以在其中进行，从而提升性能。</p>
+</blockquote>
+<ul>
+<li>CPU通过字节地址访问快速的 <code>cache</code>，通过一定查找机制判断数据是否在 <code>cache</code> 中<ul>
+<li>如果数据在 <code>cache</code> 中，则称为<strong>数据命中(cache hit)<strong>，</strong>命中访问时间</strong>为 $t_c$，包括查找时间和 <code>cache</code> 访问时间</li>
+<li>如果数据不在 <code>cache</code> 中，则称为**数据丢失(cache miss)<strong>，需要将缺失的数据从主存调入 <code>cache</code> 中；数据缺失的访问时间称为</strong>缺失补偿(miss penalty)**，包括数据查找时间、主存访问时间、<code>cache</code> 访问时间，通常用主存访问时间 $t_m$ 表示。</li>
+</ul>
+</li>
+<li>为了便于比较和快速查找，<code>cache</code> 和主存都被分成若干个固定大小的<strong>块</strong>，每个块包含若干<strong>字</strong>，数据缺失时将<strong>数据所在块</strong>载入 <code>cache</code> 中 (这种预读策略可以充分利用空间局部性，提高顺序访问的命中概率)。<ul>
+<li>块过小无法使<strong>预读策略</strong>优化<a href="#%E7%A8%8B%E5%BA%8F%E5%B1%80%E9%83%A8%E6%80%A7">空间局部性</a>，块过大使<strong>替换算法</strong>无法利用<a href="#%E7%A8%8B%E5%BA%8F%E5%B1%80%E9%83%A8%E6%80%A7">时间局部性</a>。</li>
+</ul>
+</li>
+<li>数据分块后，地址可以分为<strong>块地址</strong>和<strong>偏移地址</strong>， <code>cache</code> 容量较小，因此主存地址字段长度大于 <code>cache</code> 地址字段长度。</li>
+</ul>
+<p><strong>命中率</strong>（评价 <code>cache</code> 性能）</p>
+<ul>
+<li><p>设 $N_c$ 为运行期间命中 <code>cache</code> 次数，$N_m$ 为从主存访问次数，命中率 $h$ 为：<br>$$<br>h = \frac{N_c}{N_c+N_m}, ;;h\rightarrow1,;性能越好<br>$$<br>$1-h$ 称为<strong>缺失率</strong>。</p>
+</li>
+<li><p>$t_c$ 表示命中访问时间，$t_m$ 表示缺失访问时间，平均访问时间 $t_a$ 为<br>$$<br>t_a=ht_c+(1-h)t_m,;;cache 目的是使t_a\rightarrow t_c<br>$$<br> $e=t_c/t_a$ 为<strong>访问效率</strong>，$r=t_m/t_c$ 为主存相对 <code>caceh</code> 访问时间的倍数，<br>$$<br>e=\frac{t_c}{t_a}=\frac{1}{h+(1-h)r}<br>$$<br>显然访问效率 $e $ 与 $r$ 和 $h$ 中有关。</p>
+</li>
+</ul>
+<h3 id="程序局部性"><a href="#程序局部性" class="headerlink" title="程序局部性"></a>程序局部性</h3><blockquote>
+<p><strong>时间局部性</strong>：当程序访问一个存储位置时，该位置在未来可能会被多次访问。比如程序的循环结构和调用过程。</p>
+<p><strong>空间局部性</strong>：一旦程序访问了某个存储单元，则其附近的存储单元也即将被访问。如指令代码、数组、结构体等顺序存放的结构。</p>
+</blockquote>
+
                 
             </div>
             <hr/>
@@ -515,7 +558,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://Maoshengren.github.io/2021/10/24/Netty-%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/">http://Maoshengren.github.io/2021/10/24/Netty-%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</a>
+                    <a href="http://Maoshengren.github.io/2021/10/26/Cache%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">http://Maoshengren.github.io/2021/10/26/Cache%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -552,7 +595,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E8%AE%A1%E7%BB%84/">
+                                    <span class="chip bg-color">计组</span>
+                                </a>
+                            
+                                <a href="/tags/Cache/">
+                                    <span class="chip bg-color">Cache</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -720,9 +771,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/10/26/Cache%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">
                     <div class="card-image">
@@ -740,9 +792,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-26
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-26
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -755,6 +807,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -777,19 +830,19 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/10/24/Java-NIO/">
+                <a href="/2021/10/24/Netty-%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Java NIO">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Netty 线程模型">
                         
-                        <span class="card-title">Java NIO</span>
+                        <span class="card-title">Netty 线程模型</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java NIO知识总结
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -798,27 +851,11 @@
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Java/" class="post-category">
-                                    Java
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Maosr
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Java/">
-                        <span class="chip bg-color">Java</span>
-                    </a>
-                    
-                    <a href="/tags/NIO/">
-                        <span class="chip bg-color">NIO</span>
-                    </a>
-                    
                 </div>
                 
             </div>
