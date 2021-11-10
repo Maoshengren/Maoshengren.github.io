@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Netty 线程模型, MAOSR">
+    <meta name="keywords" content="Java类加载机制, MAOSR">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Netty 线程模型 | MAOSR</title>
+    <title>Java类加载机制 | MAOSR</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Netty 线程模型</h1>
+                    <h1 class="description center-align post-title">Java类加载机制</h1>
                 </div>
             </div>
         </div>
@@ -433,12 +433,16 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Netty/">
-                                <span class="chip bg-color">Netty</span>
+                            <a href="/tags/JVM/">
+                                <span class="chip bg-color">JVM</span>
                             </a>
                         
-                            <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-                                <span class="chip bg-color">多线程</span>
+                            <a href="/tags/Java/">
+                                <span class="chip bg-color">Java</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">
+                                <span class="chip bg-color">类加载</span>
                             </a>
                         
                     </div>
@@ -449,8 +453,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Java/" class="post-category">
-                                Java
+                            <a href="/categories/JVM/" class="post-category">
+                                JVM
                             </a>
                         
                     </div>
@@ -462,28 +466,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-10-24
+                    2021-10-31
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-10-28
+                    2021-11-07
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -506,7 +510,82 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="Java类加载机制"><a href="#Java类加载机制" class="headerlink" title="Java类加载机制"></a>Java类加载机制</h2><blockquote>
+<p>Java虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这个过程被称作虚拟机的<strong>类加载机制</strong>。 </p>
+<p>在Java语言里面，类型的加载、连接和初始化过程都是在程序运行期间完成的。</p>
+</blockquote>
+<h3 id="1-类加载时机"><a href="#1-类加载时机" class="headerlink" title="1.类加载时机"></a>1.类加载时机</h3><blockquote>
+<p>一个类型从被加载到虚拟机内存中开始，到卸载出内存为止，它的整个生命周期将会经历加载（Loading）、验证（Verification）、准备（Preparation）、解析（Resolution）、初始化（Initialization）、使用（Using）和卸载（Unloading）七个阶段。</p>
+<p>其中验证、准备、解析三个部分统称为连接（Linking）。</p>
+</blockquote>
+<p><img src="/2021/10/31/java-lei-jia-zai-ji-zhi/image-20211106154126066.png" alt=""></p>
+<ul>
+<li><p>对于初始化阶段，《Java虚拟机规范》则是严格规定了有且只有六种情况必须立即对类进行“初始化”（而加载、验证、准备自然需要在此之前开始）：</p>
+<ul>
+<li>遇到<code>new</code>、<code>getstatic</code>、<code>putstatic</code>或<code>invokestatic</code>这四条字节码指令时，如果类型没有进行过初始化，则需要先触发其初始化阶段。<ul>
+<li>使用<code>new</code>关键字实例化对象的时候</li>
+<li>读取或设置一个类型的静态字段（被final修饰、已在编译期把结果放入常量池的静态字段除外）的时候</li>
+<li>调用一个类型的静态方法的时候</li>
+</ul>
+</li>
+<li>使用<code>java.lang.reflect</code>包的方法对类型进行反射调用的时候，如果类型没有进行过初始化，则需要先触发其初始化</li>
+<li>当初始化类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类的初始化</li>
+<li>当虚拟机启动时，用户需要指定一个要执行的主类（包含<code>main()</code>方法的那个类），虚拟机会先初始化这个主类</li>
+<li>当一个接口中定义了JDK 8新加入的默认方法（被<code>default</code>关键字修饰的接口方法）时，如果有这个接口的实现类发生了初始化，那该接口要在其之前被初始化</li>
+</ul>
+</li>
+<li><p>引用类型的方式都不会触发初始化，称为<strong>被动引用</strong></p>
+</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 被动使用类字段演示一：
+ * 通过子类引用父类的静态字段，不会导致子类初始化
+**/</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SuperClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"SuperClass init!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> value <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SubClass</span> <span class="token keyword">extends</span> <span class="token class-name">SuperClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"SubClass init!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment">/**
+ * 非主动使用类字段演示
+**/</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NotInitialization</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">SubClass</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>代码运行之后，只会输出“SuperClass init！”，而不会输出“SubClass init！”。对于静态字段，只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化</li>
+</ul>
+<hr>
+<h3 id="2-类加载过程"><a href="#2-类加载过程" class="headerlink" title="2.类加载过程"></a>2.类加载过程</h3><h4 id="2-1加载"><a href="#2-1加载" class="headerlink" title="2.1加载"></a>2.1加载</h4><blockquote>
+<p>在加载阶段，Java虚拟机需要完成以下三件事情：</p>
+<ul>
+<li>通过一个类的全限定名来获取定义此类的二进制字节流。</li>
+<li>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。</li>
+<li>在内存中生成一个代表这个类的<code>java.lang.Class</code>对象，作为方法区这个类的各种数据的访问入口</li>
+</ul>
+</blockquote>
+<h4 id="2-2验证"><a href="#2-2验证" class="headerlink" title="2.2验证"></a>2.2验证</h4><blockquote>
+<p>验证是连接阶段的第一步，这一阶段的目的是确保Class文件的字节流中包含的信息符合《Java虚拟机规范》的全部约束要求，保证这些信息被当作代码运行后不会危害虚拟机自身的安全。</p>
+</blockquote>
+<h4 id="2-3准备"><a href="#2-3准备" class="headerlink" title="2.3准备"></a>2.3准备</h4><blockquote>
+<p>准备阶段是正式为类中定义的变量（即静态变量，被static修饰的变量）分配内存并设置类变量初始值的阶段。</p>
+</blockquote>
+<ul>
+<li>关于准备阶段，还有两个容易产生混淆的概念<ul>
+<li>首先是这时候进行内存分配的仅包括类变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在Java堆中。</li>
+<li>其次是这里所说的初始值“通常情况”下是数据类型的零值。</li>
+</ul>
+</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -532,7 +611,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://Maoshengren.github.io/2021/10/24/netty-xian-cheng-mo-xing/">http://Maoshengren.github.io/2021/10/24/netty-xian-cheng-mo-xing/</a>
+                    <a href="http://Maoshengren.github.io/2021/10/31/java-lei-jia-zai-ji-zhi/">http://Maoshengren.github.io/2021/10/31/java-lei-jia-zai-ji-zhi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -570,12 +649,16 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Netty/">
-                                    <span class="chip bg-color">Netty</span>
+                                <a href="/tags/JVM/">
+                                    <span class="chip bg-color">JVM</span>
                                 </a>
                             
-                                <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-                                    <span class="chip bg-color">多线程</span>
+                                <a href="/tags/Java/">
+                                    <span class="chip bg-color">Java</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">
+                                    <span class="chip bg-color">类加载</span>
                                 </a>
                             
                         </div>
@@ -749,25 +832,74 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/10/26/cache-gong-zuo-yuan-li/">
+                <a href="/2021/11/04/zhi-ling-xi-tong/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Cache工作原理">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="指令系统">
                         
-                        <span class="card-title">Cache工作原理</span>
+                        <span class="card-title">指令系统</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Cache工作原理
+                            指令系统知识点总结
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-26
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-04
                         </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Maosr
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%AE%A1%E7%BB%84/">
+                        <span class="chip bg-color">计组</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">指令系统</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/10/28/xu-ni-cun-chu-qi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="虚拟存储器">
+                        
+                        <span class="card-title">虚拟存储器</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            virtual memory 知识点总结
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-28
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -787,61 +919,8 @@
                         <span class="chip bg-color">计组</span>
                     </a>
                     
-                    <a href="/tags/Cache/">
-                        <span class="chip bg-color">Cache</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/10/24/java-nio/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Java NIO">
-                        
-                        <span class="card-title">Java NIO</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Java NIO知识总结
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-24
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Java/" class="post-category">
-                                    Java
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Java/">
-                        <span class="chip bg-color">Java</span>
-                    </a>
-                    
-                    <a href="/tags/NIO/">
-                        <span class="chip bg-color">NIO</span>
+                    <a href="/tags/%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8/">
+                        <span class="chip bg-color">虚拟存储</span>
                     </a>
                     
                 </div>

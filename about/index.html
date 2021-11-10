@@ -366,21 +366,21 @@
                     <div class="post-statis col l4 hide-on-med-and-down" data-aos="zoom-in-right">
                         
 <div class="statis">
-    <span class="count"><a href="/">7</a></span>
+    <span class="count"><a href="/">10</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">5</a></span>
+    <span class="count"><a href="/categories">6</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">13</a></span>
+    <span class="count"><a href="/tags">16</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -396,21 +396,21 @@
                                 <div class="post-statis hide-on-large-only" data-aos="zoom-in-right">
                                     
 <div class="statis">
-    <span class="count"><a href="/">7</a></span>
+    <span class="count"><a href="/">10</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">5</a></span>
+    <span class="count"><a href="/categories">6</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">13</a></span>
+    <span class="count"><a href="/tags">16</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -544,7 +544,7 @@
         },
         xAxis: {
             type: 'category',
-            data: ["2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10"]
+            data: ["2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11"]
         },
         yAxis: {
             type: 'value',
@@ -554,7 +554,7 @@
                 name: '文章篇数',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,0,0,0,0,0,0,0,0,0,0,0,7],
+                data: [0,0,0,0,0,0,0,0,0,0,0,8,2],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -596,7 +596,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"deploy problem","value":1},{"name":"计算机网络","value":1},{"name":"计算机组成原理","value":2},{"name":"Java","value":2},{"name":"OS","value":1}],
+                data: [{"name":"JVM","value":1},{"name":"OS","value":1},{"name":"计算机组成原理","value":2},{"name":"Java","value":2},{"name":"deploy problem","value":1},{"name":"计算机网络","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -620,7 +620,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["计组","Hexo","github","计网","IP","Cache","Java","NIO","虚拟存储","IO"]
+                data: ["计组","Java","JVM","类加载","IO","OS","Cache","Netty","多线程","Hexo"]
             }
         ],
         yAxis: [
@@ -633,7 +633,7 @@
                 type: 'bar',
                 color: ['#82d3f4'],
                 barWidth : 18,
-                data: [2,1,1,1,1,1,1,1,1,1],
+                data: [3,2,1,1,1,1,1,1,1,1],
                 markPoint: {
                     symbolSize: 45,
                     data: [{
@@ -733,52 +733,16 @@
         <div class="tag-chips center-align">
             
             
-            <a href="/tags/Hexo/">
-                <span class="chip center-align waves-effect waves-light chip-default">Hexo</span>
-            </a>
-            
-            
-            
-            <a href="/tags/github/">
-                <span class="chip center-align waves-effect waves-light chip-default">github</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E8%AE%A1%E7%BD%91/">
-                <span class="chip center-align waves-effect waves-light chip-default">计网</span>
-            </a>
-            
-            
-            
-            <a href="/tags/IP/">
-                <span class="chip center-align waves-effect waves-light chip-default">IP</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E8%AE%A1%E7%BB%84/">
-                <span class="chip center-align waves-effect waves-light chip-default">计组</span>
-            </a>
-            
-            
-            
-            <a href="/tags/Cache/">
-                <span class="chip center-align waves-effect waves-light chip-default">Cache</span>
+            <a href="/tags/JVM/">
+                <span class="chip center-align waves-effect waves-light chip-default">JVM</span>
             </a>
             
             
             
             
             
-            <a href="/tags/NIO/">
-                <span class="chip center-align waves-effect waves-light chip-default">NIO</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8/">
-                <span class="chip center-align waves-effect waves-light chip-default">虚拟存储</span>
+            <a href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">
+                <span class="chip center-align waves-effect waves-light chip-default">类加载</span>
             </a>
             
             
@@ -795,6 +759,18 @@
             
             
             
+            <a href="/tags/%E8%AE%A1%E7%BB%84/">
+                <span class="chip center-align waves-effect waves-light chip-default">计组</span>
+            </a>
+            
+            
+            
+            <a href="/tags/Cache/">
+                <span class="chip center-align waves-effect waves-light chip-default">Cache</span>
+            </a>
+            
+            
+            
             <a href="/tags/Netty/">
                 <span class="chip center-align waves-effect waves-light chip-default">Netty</span>
             </a>
@@ -803,6 +779,48 @@
             
             <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
                 <span class="chip center-align waves-effect waves-light chip-default">多线程</span>
+            </a>
+            
+            
+            
+            <a href="/tags/Hexo/">
+                <span class="chip center-align waves-effect waves-light chip-default">Hexo</span>
+            </a>
+            
+            
+            
+            <a href="/tags/github/">
+                <span class="chip center-align waves-effect waves-light chip-default">github</span>
+            </a>
+            
+            
+            
+            <a href="/tags/NIO/">
+                <span class="chip center-align waves-effect waves-light chip-default">NIO</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F/">
+                <span class="chip center-align waves-effect waves-light chip-default">指令系统</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8/">
+                <span class="chip center-align waves-effect waves-light chip-default">虚拟存储</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E8%AE%A1%E7%BD%91/">
+                <span class="chip center-align waves-effect waves-light chip-default">计网</span>
+            </a>
+            
+            
+            
+            <a href="/tags/IP/">
+                <span class="chip center-align waves-effect waves-light chip-default">IP</span>
             </a>
             
             
@@ -933,7 +951,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">11.5k</span>&nbsp;字
+                class="white-color">14.2k</span>&nbsp;字
             
             
             

@@ -476,14 +476,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    745
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -506,7 +506,65 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="File-IO"><a href="#File-IO" class="headerlink" title="File IO"></a>File IO</h2><blockquote>
+<p>UNIX系统上的大多数文件I/O只能使用5个函数来执行:open、read、write、lseek和close，这些函数通常被称为无缓冲I/O，</p>
+</blockquote>
+<h3 id="1-文件描述符"><a href="#1-文件描述符" class="headerlink" title="1.文件描述符"></a>1.文件描述符</h3><blockquote>
+<p>对于内核，所有打开的文件都由文件描述符引用。文件描述符是非负整数。 </p>
+</blockquote>
+<ul>
+<li>当我们打开一个现有文件或创建一个新文件时，内核会向进程返回一个文件描述符。</li>
+<li>当我们想要读或写一个文件时，我们用<code>open</code>或<code>create</code>返回的文件描述符作为参数来标识该文件。</li>
+</ul>
+<blockquote>
+<p>按照惯例，UNIX系统shell将0对应标准输入<code>STDIN_FILENO</code>，将1对应标准输出<code>STDOUT_FILENO</code>，将2对应标准错误输出<code>STDERR_FILENO</code>。</p>
+</blockquote>
+<ul>
+<li>文件描述符的范围从0到<code>OPEN_MAX−1</code>。</li>
+</ul>
+<h3 id="2-文件IO函数"><a href="#2-文件IO函数" class="headerlink" title="2.文件IO函数"></a>2.文件IO函数</h3><h4 id="2-1-open函数"><a href="#2-1-open函数" class="headerlink" title="2.1 open函数"></a>2.1 <code>open</code>函数</h4><blockquote>
+<p>通过调用<code>open</code>函数或<code>openat</code>函数打开或创建文件。 </p>
+</blockquote>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>path<span class="token punctuation">,</span> <span class="token keyword">int</span> oflag<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token comment">/* mode_t mode */</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">openat</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>path<span class="token punctuation">,</span> <span class="token keyword">int</span> oflag<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token comment">/* mode_t mode */</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+								Both <span class="token keyword">return</span><span class="token operator">:</span> file descriptor <span class="token keyword">if</span> OK<span class="token punctuation">,</span> −<span class="token number">1</span> on error<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><p>最后一个参数显示为…，这是指定其余参数的数量和类型可能不同。</p>
+</li>
+<li><p>对于这些函数，最后一个参数仅在创建新文件时使用</p>
+</li>
+<li><p><code>path</code>参数是要打开或创建的文件的名称。</p>
+<ul>
+<li><p>这个函数有许多选项，由<code>oflag</code>参数指定。这个参数由<code>&lt;fcntl.h&gt;</code>头文件中的一个或多个常量组成:</p>
+<pre class="line-numbers language-none"><code class="language-none">O_RDONLY Open for reading only.
+O_WRONLY Open for writing only.
+O_RDWR Open for reading and writing.
+O_EXEC Open for execute only.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>为了与旧程序兼容，大多数实现将<code>O_RDONLY</code>定义为0,<code>O_WRONLY</code>定义为1,<code>O_RDWR</code>定义为2。</p>
+</li>
+<li><p>前五个常量中只有一个必须指定。以下常量是可选的:</p>
+<pre class="line-numbers language-none"><code class="language-none">O_APPEND 在每次写入时附加到文件末尾。
+O_CLOEXEC 设置FD_CLOEXEC文件描述符标志。
+O_CREAT 如果文件不存在，则创建该文件。
+O_DIRECTORY 如果路径没有指向目录，则生成错误。
+O_EXCL 如果指定了O_CREAT并且文件已经存在，则生成一个错误。
+O_NOFOLLOW 如果路径指向符号链接，则生成错误。
+O_NONBLOCK  此选项为打开文件和随后的I/O设置非阻塞模式。
+O_TRUNC 如果文件存在，并且成功地以只写或读写的方式打开，则将其长度截断为0。
+O_SYNC 让每个写操作等待物理I/O完成，包括更新由于写操作而修改的文件属性所需的I/O。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>下面两个标志也是可选的。它们是同步输入和输出选项的一部分</p>
+<pre class="line-numbers language-none"><code class="language-none">O_DSYNC 让每次写入等待物理I/O完成，但如果文件属性不影响读取刚刚写入的数据的能力，就不要等待文件属性的更新。
+O_RSYNC 让文件描述符上的每个读操作都等待，直到文件同一部分的任何挂起的写操作完成。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+<li><p><code>open</code>和<code>openat</code>返回的文件描述符<code>fd</code>保证是编号最低的未使用描述符。</p>
+</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -1044,7 +1102,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">11.5k</span>&nbsp;字
+                class="white-color">14.2k</span>&nbsp;字
             
             
             

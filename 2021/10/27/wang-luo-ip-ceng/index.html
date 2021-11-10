@@ -469,21 +469,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-10-27
+                    2021-11-01
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.3k
+                    4.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    17 分
                 </div>
                 
 
@@ -759,7 +759,63 @@
 <li><strong>跳限制(Hop limit)：</strong>转发数据报的每台路由器将该字段-1。如果计数为0，则丢弃。</li>
 </ul>
 <hr>
-<h3 id="2-控制平面"><a href="#2-控制平面" class="headerlink" title="2.控制平面"></a>2.控制平面</h3>
+<h3 id="2-控制平面"><a href="#2-控制平面" class="headerlink" title="2.控制平面"></a>2.控制平面</h3><h4 id="2-1路由选择算法"><a href="#2-1路由选择算法" class="headerlink" title="2.1路由选择算法"></a>2.1路由选择算法</h4><blockquote>
+<p>从发送方到接受方确定一条通过路由器网络的最佳路径。</p>
+</blockquote>
+<ul>
+<li><p>路由选择算法的一种分类方式：</p>
+<ul>
+<li><p><strong>集中式路由选择算法：</strong>用完整的、全局性的网络知识计算出从源地址到目的地址的最低开销路径。该算法以所有节点之间的<strong>连通性</strong>和所有链路的<strong>开销</strong>作为输入。</p>
+<p>具有全局状态信息的算法通常称为<strong>链路状态(Link State, LS)算法</strong>。</p>
+</li>
+<li><p><strong>分散式路由选择算法：</strong>路由器以迭代、分布式的方式计算出最低开销路径。没有节点拥有关于所有网络链路开销的完整信息。每个节点仅有直接相连的链路开销信息即可工作。</p>
+</li>
+</ul>
+</li>
+<li><p>第二种分类方式：</p>
+<ul>
+<li><strong>静态路由选择算法：</strong>路由随时间变化非常缓慢，通常人工进行调整（人工编辑链路开销）。</li>
+<li><strong>动态路由选择算法：</strong>随着网络流量负载或拓扑发生变化而改变路由选择路径。易受选择循环、路由震荡之类问题的影响。</li>
+</ul>
+</li>
+<li><p>第三种分类方式：</p>
+<ul>
+<li><strong>负载敏感算法：</strong>链路开销会动态变化以反映底层链路的拥塞水平。</li>
+<li><strong>负载迟钝算法：</strong>链路开销不反映拥塞水平</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>链路状态路由选择算法</strong></p>
+<blockquote>
+<p>通过每个节点向网络中所有其他节点广播链路状态分组（链路标识和开销）来确定所有链路开销。</p>
+</blockquote>
+<p><code>Disjkstra</code>算法</p>
+<pre class="line-numbers language-pseudocode" data-language="pseudocode"><code class="language-pseudocode">Initialization:
+	N’ = {u}
+    for all nodes v
+    if v is a neighbor of u
+    	then D(v) = c(u, v)
+    else 
+    	D(v) = ∞
+
+Loop
+    find w not in N’ such that D(w) is a minimum
+    add w to N’
+    update D(v) for each neighbor v of w and not in N’:
+    D(v) = min(D(v), D(w)+ c(w, v) )
+    /* new cost to v is either old cost to v or known
+       least path cost to w plus cost from w to v */
+until N’= N<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p><strong>距离向量路由选择算法</strong></p>
+<blockquote>
+<p>是一种迭代的、异步的、分布式的算法。</p>
+<p><strong>分布式</strong>：每个节点从一个或多个直接相连邻居接收信息，执行计算，将结果分发给邻居。</p>
+<p><strong>迭代</strong>：过程一直持续到邻居之间无更多信息交换为止。</p>
+<p><strong>异步</strong>：不要求所有节点相互之间操作一致。</p>
+</blockquote>
+
                 
             </div>
             <hr/>
@@ -1297,7 +1353,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">11.5k</span>&nbsp;字
+                class="white-color">14.2k</span>&nbsp;字
             
             
             
