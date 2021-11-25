@@ -469,21 +469,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-11-14
+                    2021-11-24
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.9k
+                    5.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    17 分
+                    18 分
                 </div>
                 
 
@@ -759,7 +759,7 @@
 <li><strong>跳限制(Hop limit)：</strong>转发数据报的每台路由器将该字段-1。如果计数为0，则丢弃。</li>
 </ul>
 <hr>
-<h3 id="2-控制平面"><a href="#2-控制平面" class="headerlink" title="2.控制平面"></a>2.控制平面</h3><h4 id="2-1路由选择算法"><a href="#2-1路由选择算法" class="headerlink" title="2.1路由选择算法"></a>2.1路由选择算法</h4><blockquote>
+<h3 id="2-控制平面"><a href="#2-控制平面" class="headerlink" title="2.控制平面"></a>2.控制平面</h3><h4 id="2-1-路由选择算法"><a href="#2-1-路由选择算法" class="headerlink" title="2.1 路由选择算法"></a>2.1 路由选择算法</h4><blockquote>
 <p>从发送方到接受方确定一条通过路由器网络的最佳路径。</p>
 </blockquote>
 <ul>
@@ -817,6 +817,34 @@ until N’= N<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
 <p><strong>迭代</strong>：过程一直持续到邻居之间无更多信息交换为止。</p>
 <p><strong>异步</strong>：不要求所有节点相互之间操作一致。</p>
 </blockquote>
+<hr>
+<h4 id="2-2-OSPF"><a href="#2-2-OSPF" class="headerlink" title="2.2 OSPF"></a>2.2 OSPF</h4><blockquote>
+<p><strong>自治系统</strong>（AS）：通常在一个ISP中的路由器以及互联它们的链路构成一个AS。</p>
+<p>在相同AS中的路由器都运行相同的路由选择算法并且有彼此的信息。</p>
+<p>在一个自治系统内运行的路由选择算法叫作<strong>自治系统内部路由选择协议</strong>(intra-autonomous system routing protocol)。</p>
+</blockquote>
+<p><strong>OSPF</strong></p>
+<blockquote>
+<p>OSPF是一种链路状态协议，它使用洪泛链路状态信息和Dijkstra最低开销路径算法。</p>
+<p>使用OSPF，一台路由器构建了一幅关于整个<strong>自治系统</strong>的完整拓扑图。于是，每台路由器在本地运行Djkstra的最短路径算法，以确定一个以自身为根节点到所有子网的最短路径树。各条链路开销是由网络管理员配置的。</p>
+</blockquote>
+<ul>
+<li>使用OSPF时，路由器向自治系统内所有其他路由器广播路由选择信息，而不仅仅是向其相邻路由器广播。</li>
+<li>每当一条链路的状态发生变化时(如开销的变化或连接/中断状态的变化)，路由器就会广播链路状态信息。</li>
+<li>即使链路状态未发生变化，它也要周期性地(至少每隔30min一次)广播链路状态。</li>
+</ul>
+<hr>
+<h4 id="2-3-ISP之间的路由选择-BGP"><a href="#2-3-ISP之间的路由选择-BGP" class="headerlink" title="2.3 ISP之间的路由选择:BGP"></a>2.3 ISP之间的路由选择:BGP</h4><blockquote>
+<p>在因特网中，所有的AS运行相同的AS间路由选择协议，称为边界网关协议（BGP）。</p>
+<p>在BGP中，分组并不是路由到一个特定的目的地址，相反是路由到CIDR化的前缀，其中每个前缀表示一个子网或一个子网的集合。</p>
+</blockquote>
+<ul>
+<li>作为一种AS间的路由选择协议，BGP为每台路由器提供了一种完成以下任务的手段:<ul>
+<li>从邻居AS获得前缀的可达性信息。</li>
+<li>确定到该前缀的“最好的”路由。</li>
+</ul>
+</li>
+</ul>
 
                 
             </div>
@@ -1355,7 +1383,7 @@ until N’= N<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">15.4k</span>&nbsp;字
+                class="white-color">18.2k</span>&nbsp;字
             
             
             
