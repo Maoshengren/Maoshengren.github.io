@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="计网复习题, MAOSR">
+    <meta name="keywords" content="CS144 notes, MAOSR">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>计网复习题 | MAOSR</title>
+    <title>CS144 notes | MAOSR</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">计网复习题</h1>
+                    <h1 class="description center-align post-title">CS144 notes</h1>
                 </div>
             </div>
         </div>
@@ -433,8 +433,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%A4%8D%E4%B9%A0%E9%A2%98/">
-                                <span class="chip bg-color">复习题</span>
+                            <a href="/tags/CS144/">
+                                <span class="chip bg-color">CS144</span>
+                            </a>
+                        
+                            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                                <span class="chip bg-color">计算机网络</span>
                             </a>
                         
                     </div>
@@ -458,21 +462,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-11-19
+                    2022-02-20
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-11-26
+                    2022-02-21
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    773
+                    417
                 </div>
                 
 
@@ -502,53 +506,54 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="计算机网络复习题"><a href="#计算机网络复习题" class="headerlink" title="计算机网络复习题"></a>计算机网络复习题</h2><h3 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h3><h3 id="第四章"><a href="#第四章" class="headerlink" title="第四章"></a>第四章</h3><ul>
-<li>描述应用程序开发者为什么可能选择在UDP上运行应用程序而不是在TCP上运行的原因。</li>
-</ul>
-<details>
-    <summary>答案</summary>
-    <pre>1. 不希望其应用程序使用TCP的拥塞控制，因为TCP的拥塞控制会在拥塞时限制应用程序的发送速率。
-2. 一些应用程序不需要TCP提供的可靠数据传输。 
-    </pre>
-</details>
-
+                <h1 id="CS144"><a href="#CS144" class="headerlink" title="CS144"></a>CS144</h1><p>paper中一些C++约定：</p>
 <ul>
-<li>考虑一种仅使用否定确认的可靠数据传输协议。假定发送方只是偶尔发送数据。只用<code>NAK</code>的协议是否会比使用<code>ACK</code>的协议更好?为什么?现在我们假设发送方要发送大量的数据，并且该端到端连接很少丢包。在第二种情况下，只用<code>NAK</code>的协议是否会比使用<code>ACK</code>的协议更好?为什么?</li>
+<li>Never use malloc() or free(). </li>
+<li>Never use new or delete. </li>
+<li>Essentially never use raw pointers (*), and use “smart” pointers (<code>unique_ptr</code> or <code>shared_ptr</code>) only when necessary. (You will not need to use these in CS144.) </li>
+<li>Avoid templates, threads, locks, and virtual functions. (You will not need to use these in CS144.) </li>
+<li>Avoid C-style strings (<code>char *str</code>) or string functions (<code>strlen()</code>, <code>strcpy()</code>). These are pretty error-prone. Use a <code>std::string</code> instead. </li>
+<li>Never use C-style casts (e.g., (FILE *)x). Use a C++ <code>static_cast</code> if you have to (you generally will not need this in CS144). </li>
+<li>Prefer passing function arguments by <code>const</code> reference (e.g.: <code>const Address &amp; address</code>).</li>
+<li>Make every variable <code>const</code> unless it needs to be mutated. </li>
+<li>Make every method <code>const</code> unless it needs to mutate the object. </li>
+<li>Avoid global variables, and give every variable the smallest scope possible.</li>
 </ul>
-<details>
-    <summary>答案</summary>
-    <pre>1. 在NAK only协议中，接收方只有在接收到x+1报文时才检测到x报文的丢失。如果x的传输和x+1
-的传输之间有很长一段延迟，那么在仅NAK协议下，将需要很长一段时间才能恢复x。
-2. 如果经常发送数据，那么在仅NAK方案下的恢复会很快发生。此外，如果错误不经常发生，那么
-NAK只是偶尔发送(当需要时)，NAK明显比ACK少，减少了资源占用。  
-    </pre>
-</details>
-
+<h2 id="lab0"><a href="#lab0" class="headerlink" title="lab0"></a>lab0</h2><h3 id="Writing-webget"><a href="#Writing-webget" class="headerlink" title="Writing webget"></a>Writing webget</h3><p>完成<code>webget.cc</code>中的<code>get_URL</code>函数，实现对网页数据的获取。</p>
+<p>步骤如下</p>
 <ul>
-<li>考虑一个GBN 协议，其发送方窗口为4，序号范围为1024。假设在时刻t，接收方期待的下一个有序分组的序号是k。假设媒体不会对报文重新排序。回答以下问题:<br>a. 在t时刻，发送方窗口内的报文序号可能是多少?论证你的回答。<br>b. 在t时刻，在当前传播回发送方的所有可能报文中，ACK字段的所有可能值是多少?论证你的回答。</li>
+<li>创建一个<code>TCPSocket</code>并与服务器建立连接。</li>
+<li>向服务器发送请求，在<code>HTTP</code>中每行的结尾应该为<code>\r\n</code>。</li>
+<li>发送完请求后，客户端应该关闭<code>TCPSocket</code>的写功能(<code>SHUT_WR</code>)，对应前面的<code>Connection: close</code>，即http短连接，服务器发送完数据后断开连接。</li>
+<li>循环读取从服务器发送过来的信息，直到遇到<code>EOF (end of file)</code>。</li>
+<li>关闭<code>TCPSocket</code>。</li>
 </ul>
-<details>
-    <summary>答案</summary>
-    <pre>a. 假设接收方收到了k-1分组，并且之前的分组全部ACk，如果这些ACK全部被发送方收到，那么发送
-方的窗口为[k, k+4-1]。假设这些ACK全部没被发送方收到，那么窗口右边界为k-1，则发送方窗口
-为[k-4, k-1]。
-b. 由于发送方窗口位置始终比收到的确认号大1，因此发送方收到的ACK的范围为[k-4-1, k-1]。
-    </pre>
-</details>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void get_URL(const string &amp;host, const string &amp;path) {
+    // Your code here.
 
-<ul>
-<li>假设测量的5个<code>SampleRTT</code>值是$106ms、120ms、140ms、90ms和115ms$。在获得了每个<code>SampleRTT</code>值后计算<code>EstimatedRTT</code>，使用$α=0.125$并且假设在刚获得前5个样本之后<code>EstimatedRTT</code>的值为$100ms$。在获得每个样本之后，也计算<code>DevRTT</code>，假设$β=0.25$，并且假设在刚获得前5个样本之后<code>DevRTT</code>的值为$5ms$。最后，在获得这些样本之后计算TCP <code>TimeoutInterval</code>。计算公式如下：</li>
-</ul>
-<script type="math/tex; mode=display">
-DevRTT =  (1- \beta) * DevRTT + \beta * | SampleRTT - EstimatedRTT | \\
-EstimatedRTT = (1-\alpha) * EstimatedRTT + \alpha * SampleRTT\\
-TimeoutInterval = EstimatedRTT + 4 * DevRTT\\</script><p>获得第一个<code>SampleRTT</code> $106ms$后: </p>
-<script type="math/tex; mode=display">
-DevRTT = 0.75*5 + 0.25 * | 106 - 100 | = 5.25ms\\
+    // You will need to connect to the "http" service on
+    // the computer whose name is in the "host" string,
+    // then request the URL path given in the "path" string.
+	TCPSocket sock{};
+	sock.connect(Address(host, "http"));
+	
+    // Then you'll need to print out everything the server sends back,
+    // (not just one call to read() -- everything) until you reach
+    // the "eof" (end of file).
+	sock.write("GET " + path + " HTTP/1.1\r\nHost: " + host + "\r\n\r\n");
+	sock.shutdown(SHUT_WR);
+	
+	while (!sock.eof()) {
+        cout &lt;&lt; sock.read();
+    }
+    sock.close();
 
-EstimatedRTT = 0.875 * 100 + 0.125 * 106 = 100.75 ms\\
+    return;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h3 id="An-in-memory-reliable-byte-stream"><a href="#An-in-memory-reliable-byte-stream" class="headerlink" title="An in-memory reliable byte stream"></a>An in-memory reliable byte stream</h3><p>实现一个用来支持给输入端写入数据和输出端读取数据的字节流缓冲区。</p>
+<p>ca</p>
 
-TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
                 
             </div>
             <hr/>
@@ -574,7 +579,7 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://Maoshengren.github.io/2021/11/19/ji-wang-fu-xi-ti/">http://Maoshengren.github.io/2021/11/19/ji-wang-fu-xi-ti/</a>
+                    <a href="http://Maoshengren.github.io/2022/02/20/cs144-notes/">http://Maoshengren.github.io/2022/02/20/cs144-notes/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -612,8 +617,12 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%A4%8D%E4%B9%A0%E9%A2%98/">
-                                    <span class="chip bg-color">复习题</span>
+                                <a href="/tags/CS144/">
+                                    <span class="chip bg-color">CS144</span>
+                                </a>
+                            
+                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                                    <span class="chip bg-color">计算机网络</span>
                                 </a>
                             
                         </div>
@@ -787,31 +796,31 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/">
+                <a href="/2022/02/21/k-ge-yi-zu-fan-zhuan-lian-biao/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="HUST计算机组成原理实验">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="k个一组翻转链表">
                         
-                        <span class="card-title">HUST计算机组成原理实验</span>
+                        <span class="card-title">k个一组翻转链表</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            HUST计算机组成原理实验
+                            k个一组翻转链表
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-22
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-21
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" class="post-category">
-                                    计算机组成原理
+                            <a href="/categories/LeetCode/" class="post-category">
+                                    LeetCode
                                 </a>
                             
                             
@@ -821,12 +830,12 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E8%AE%A1%E7%BB%84/">
-                        <span class="chip bg-color">计组</span>
+                    <a href="/tags/LeetCode/">
+                        <span class="chip bg-color">LeetCode</span>
                     </a>
                     
-                    <a href="/tags/%E5%AE%9E%E9%AA%8C/">
-                        <span class="chip bg-color">实验</span>
+                    <a href="/tags/%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">算法</span>
                     </a>
                     
                 </div>
@@ -840,31 +849,31 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/14/zhong-yang-chu-li-qi/">
+                <a href="/2022/02/19/cao-zuo-xi-tong-fu-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="中央处理器">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="操作系统复习">
                         
-                        <span class="card-title">中央处理器</span>
+                        <span class="card-title">操作系统复习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            中央处理器
+                            操作系统复习
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-19
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" class="post-category">
-                                    计算机组成原理
+                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                    操作系统
                                 </a>
                             
                             
@@ -874,12 +883,12 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E8%AE%A1%E7%BB%84/">
-                        <span class="chip bg-color">计组</span>
+                    <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">操作系统</span>
                     </a>
                     
-                    <a href="/tags/CPU/">
-                        <span class="chip bg-color">CPU</span>
+                    <a href="/tags/%E5%A4%8D%E4%B9%A0/">
+                        <span class="chip bg-color">复习</span>
                     </a>
                     
                 </div>
@@ -1011,13 +1020,6 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
@@ -1080,7 +1082,7 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2021</span>
+                <span id="year">2019-2022</span>
             
             <span id="year">2019</span>
             <a href="/about" target="_blank">Maosr</a>
@@ -1089,7 +1091,7 @@ TimeoutInterval = 100.75+4*5.25 = 121.75 ms</script>
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">20k</span>&nbsp;字
+                class="white-color">23.7k</span>&nbsp;字
             
             
             

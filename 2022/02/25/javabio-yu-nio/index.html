@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java NIO, MAOSR">
+    <meta name="keywords" content="JavaBIO与NIO, MAOSR">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java NIO | MAOSR</title>
+    <title>JavaBIO与NIO | MAOSR</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java NIO</h1>
+                    <h1 class="description center-align post-title">JavaBIO与NIO</h1>
                 </div>
             </div>
         </div>
@@ -441,6 +441,10 @@
                                 <span class="chip bg-color">NIO</span>
                             </a>
                         
+                            <a href="/tags/BIO/">
+                                <span class="chip bg-color">BIO</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -462,14 +466,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-10-24
+                    2022-02-25
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-10-26
+                    2022-02-25
                 </div>
                 
 
@@ -542,7 +546,7 @@
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/2021/10/24/java-nio/image-20211024112633666.png" alt="" style="zoom:50%;"></p>
+<p><img src="/2022/02/25/javabio-yu-nio/image-20211024112633666.png" alt="" style="zoom:50%;"></p>
 <blockquote>
 <p>这是一个经典的每连接每线程的模型，之所以使用多线程，主要原因在于 <code>socket.accept()</code>、<code>socket.read()</code>、<code>socket.write()</code>三个主要函数都是同步阻塞的，当一个连接在处理 I/O 的时候，系统是阻塞的，如果是单线程的话必然就挂死在那里。</p>
 <p>这也是为什么在做计网实验的时候单线程只能处理一次请求，如果再次发出请求服务器根本不会响应，因为服务器被阻塞在读写了。</p>
@@ -640,7 +644,7 @@
 <p>这也是最简单的 <code>Reactor</code> 模式：注册所有感兴趣的事件处理器，单线程轮询选择就绪事件，执行事件处理器。 </p>
 <p>NIO由原来的阻塞读写（占用线程）变成了单线程轮询事件，找到可以进行读写的网络描述符进行读写。除了事件的轮询是阻塞的（没有可干的事情必须要阻塞），剩余的I/O操作都是纯CPU操作，没有必要开启多线程。</p>
 </blockquote>
-<p><img src="/2021/10/24/java-nio/image-20211021165753294-16350547783021.png" alt="" style="zoom:40%;"></p>
+<p><img src="/2022/02/25/javabio-yu-nio/image-20211021165753294-16350547783021.png" alt="" style="zoom:40%;"></p>
 <p><code>Reactor</code> 处理请求的流程：</p>
 <ol>
 <li><code>Reactor</code> 对象通过 <code>select</code> 监控连接事件，收到事件后通过 <code>dispatch</code> 进行转发。</li>
@@ -660,9 +664,9 @@
 <p>（1）将 <code>Handler</code> 处理器的执行放入线程池，多线程进行业务处理。 </p>
 <p>（2）而对于 <code>Reactor</code> 而言，可以仍为单个线程。如果服务器为多核的CPU，为充分利用系统资源，可以将 <code>Reactor</code> 拆分为两个线程。</p>
 </blockquote>
-<p><img src="/2021/10/24/java-nio/v2-22efc734724d07251f8293e2f1143639_720w.png" alt="" style="zoom: 67%;"></p>
+<p><img src="/2022/02/25/javabio-yu-nio/v2-22efc734724d07251f8293e2f1143639_720w.png" alt="" style="zoom: 67%;"></p>
 <p>下图是 <code>netty in action</code> 中关于NIO的流程图。</p>
-<p><img src="/2021/10/24/java-nio/image-20211022204547930.png" alt=""></p>
+<p><img src="/2022/02/25/javabio-yu-nio/image-20211022204547930.png" alt=""></p>
 <p>多线程 <code>Reactor</code> 消息处理流程：</p>
 <ol>
 <li>从主线程池中随机选择一个 <code>Reactor</code> 线程作为 <code>acceptor</code> 线程，用于绑定监听端口，接收客户端连接</li>
@@ -673,7 +677,7 @@
 <li><code>Worker</code> 线程池会分配独立的线程完成真正的业务处理，如何将响应结果发给 <code>Handler</code> 进行处理</li>
 <li><code>Handler</code> 收到响应结果后通过 <code>Send</code> 将响应结果返回给 <code>Client</code> </li>
 </ol>
-<p><img src="/2021/10/24/java-nio/image-20211024141840397.png" alt="" style="zoom:50%;"></p>
+<p><img src="/2022/02/25/javabio-yu-nio/image-20211024141840397.png" alt="" style="zoom:50%;"></p>
 <blockquote>
 <p><code>Reactor</code> 模式在 IO 读写数据时还是在同一个线程中实现的，即使使用多个 <code>Reactor</code> 机制的情况下，那些共享一个 <code>Reactor</code> 的 <code>Channel</code> 如果出现一个<strong>长时间的数据读写</strong>，会影响这个 <code>Reactor</code> 中其他<code>Channel</code> 的相应时间，比如在大文件传输时，IO操作就会影响其他Client的相应时间，因而对这种操作，使用传统的 <code>Thread-Per-Connection</code> 或许是一个更好的选择，或则此时使用改进版的<code>Reactor</code> 模式如 <code>Proactor</code> 模式。</p>
 </blockquote>
@@ -681,7 +685,7 @@
 <p><code>Reactor</code> 模型用于同步I/O，而 <code>Proactor</code> 模型运用于异步I/O操作。 </p>
 </blockquote>
 <p><strong>模型</strong></p>
-<p><img src="/2021/10/24/java-nio/v2-35bd4bdf3b12246fb005415d3a29ecc0_r.jpg" alt=""></p>
+<p><img src="/2022/02/25/javabio-yu-nio/v2-35bd4bdf3b12246fb005415d3a29ecc0_r.jpg" alt=""></p>
 <p><strong>模块关系</strong> </p>
 <ol>
 <li><code>Procator Initiator</code>负责创建<code>Procator</code>和<code>Handler</code>，并将<code>Procato</code>r和<code>Handler</code>都通过<code>Asynchronous operation processor</code>注册到内核。</li>
@@ -704,7 +708,7 @@
 <p>在 Linux 下的异步 I/O 是不完善的， <code>aio</code> 系列函数是由 POSIX 定义的异步操作接口，不是真正的操作系统级别支持的，而是在用户空间模拟出来的异步，并且仅仅支持基于本地文件的 aio 异步操作，网络编程中的 socket 是不支持的，这也使得基于 Linux 的高性能网络程序都是使用 Reactor 方案。</p>
 </blockquote>
 <hr>
-<h4 id="Netty的线程模型"><a href="#Netty的线程模型" class="headerlink" title="Netty的线程模型"></a>Netty的线程模型</h4><p>Netty采用的是<strong>主从线程模型</strong>。下面是Netty使用中很常见的一段代码。</p>
+<h3 id="Netty的线程模型"><a href="#Netty的线程模型" class="headerlink" title="Netty的线程模型"></a>Netty的线程模型</h3><p>Netty采用的是<strong>主从线程模型</strong>。下面是Netty使用中很常见的一段代码。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Server</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
         <span class="token class-name">EventLoopGroup</span> bossGroup <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NioEventLoopGroup</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -743,10 +747,10 @@
 </blockquote>
 <p><strong>Netty三大组件</strong></p>
 <p><code>Channel</code>接口提供了一个API，大大降低了直接使用<code>Sockets</code>的复杂性。当创建<code>Channel</code>时，它会自动分配自己的<code>ChannelPipeline</code>。<code>ChannelPipeline</code>中含有一些<code>ChannelHandlers</code>，用于用户自定义处理事件。数据通过<code>Channel</code>在各个<code>Handler</code>之间流动。</p>
-<p><img src="/2021/10/24/java-nio/image-20211024185955001.png" alt=""></p>
+<p><img src="/2022/02/25/javabio-yu-nio/image-20211024185955001.png" alt=""></p>
 <p><code>EventLoop</code>定义了Netty的核心抽象，用于处理在连接生命周期内发生的事件。<code>Channel</code>在其生命周期内注册为一个<code>EventLoop</code>。一个<code>EventLoop</code>可以被分配给一个或多个<code>Channel</code>。</p>
 <p>关系如下图所示：</p>
-<p><img src="/2021/10/24/java-nio/image-20211024185355812.png" alt=""></p>
+<p><img src="/2022/02/25/javabio-yu-nio/image-20211024185355812.png" alt=""></p>
 <p>Netty中的所有I/O操作都是<strong>异步</strong>的。因为一个操作可能不会立即返回，所以我们需要一种方法在以后确定它的结果。为此，Netty提供了<code>ChannelFuture</code>，其<code>addListener()</code>方法注册一个<code>ChannelFutureListener</code>，当<strong>操作完成时通知</strong>它(无论是否成功)。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">channelFuture<span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ChannelProgressiveFutureListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token annotation punctuation">@Override</span>
@@ -799,7 +803,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://Maoshengren.github.io/2021/10/24/java-nio/">http://Maoshengren.github.io/2021/10/24/java-nio/</a>
+                    <a href="http://Maoshengren.github.io/2022/02/25/javabio-yu-nio/">http://Maoshengren.github.io/2022/02/25/javabio-yu-nio/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -843,6 +847,10 @@
                             
                                 <a href="/tags/NIO/">
                                     <span class="chip bg-color">NIO</span>
+                                </a>
+                            
+                                <a href="/tags/BIO/">
+                                    <span class="chip bg-color">BIO</span>
                                 </a>
                             
                         </div>
@@ -1016,31 +1024,31 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/10/24/netty-xian-cheng-mo-xing/">
+                <a href="/2022/02/25/dao-yu-shu-liang-leetcode/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Netty 线程模型">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="岛屿数量-LeetCode">
                         
-                        <span class="card-title">Netty 线程模型</span>
+                        <span class="card-title">岛屿数量-LeetCode</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Netty 线程模型分析
+                            岛屿数量-LeetCode
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-24
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-25
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Java/" class="post-category">
-                                    Java
+                            <a href="/categories/LeetCode/" class="post-category">
+                                    LeetCode
                                 </a>
                             
                             
@@ -1050,12 +1058,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Netty/">
-                        <span class="chip bg-color">Netty</span>
+                    <a href="/tags/LeetCode/">
+                        <span class="chip bg-color">LeetCode</span>
                     </a>
                     
-                    <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-                        <span class="chip bg-color">多线程</span>
+                    <a href="/tags/%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">算法</span>
                     </a>
                     
                 </div>
@@ -1069,31 +1077,31 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/10/23/deploy-problem/">
+                <a href="/2022/02/21/ji-suan-ji-wang-luo-fu-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Hexo部署问题">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="计算机网络复习">
                         
-                        <span class="card-title">Hexo部署问题</span>
+                        <span class="card-title">计算机网络复习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Hexo部署到github上遇到的问题
+                            计算机网络复习
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-23
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-21
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/deploy-problem/" class="post-category">
-                                    deploy problem
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    计算机网络
                                 </a>
                             
                             
@@ -1103,12 +1111,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Hexo/">
-                        <span class="chip bg-color">Hexo</span>
+                    <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">计算机网络</span>
                     </a>
                     
-                    <a href="/tags/github/">
-                        <span class="chip bg-color">github</span>
+                    <a href="/tags/%E5%A4%8D%E4%B9%A0/">
+                        <span class="chip bg-color">复习</span>
                     </a>
                     
                 </div>
@@ -1302,7 +1310,7 @@
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2021</span>
+                <span id="year">2019-2022</span>
             
             <span id="year">2019</span>
             <a href="/about" target="_blank">Maosr</a>
@@ -1311,7 +1319,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">20k</span>&nbsp;字
+                class="white-color">23.7k</span>&nbsp;字
             
             
             
