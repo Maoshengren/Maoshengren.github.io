@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="CS144 notes, MAOSR">
+    <meta name="keywords" content="Unix I/O多路复用, MAOSR">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>CS144 notes | MAOSR</title>
+    <title>Unix I/O多路复用 | MAOSR</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">CS144 notes</h1>
+                    <h1 class="description center-align post-title">Unix I/O多路复用</h1>
                 </div>
             </div>
         </div>
@@ -431,29 +431,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/CS144/">
-                                <span class="chip bg-color">CS144</span>
-                            </a>
-                        
-                            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                                <span class="chip bg-color">计算机网络</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
-                                计算机网络
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -462,28 +445,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-20
+                    2022-02-25
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-02-21
+                    2022-02-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    417
+                    0
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    1 分
                 </div>
                 
 
@@ -506,54 +489,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="CS144"><a href="#CS144" class="headerlink" title="CS144"></a>CS144</h1><p>paper中一些C++约定：</p>
-<ul>
-<li>Never use malloc() or free(). </li>
-<li>Never use new or delete. </li>
-<li>Essentially never use raw pointers (*), and use “smart” pointers (<code>unique_ptr</code> or <code>shared_ptr</code>) only when necessary. (You will not need to use these in CS144.) </li>
-<li>Avoid templates, threads, locks, and virtual functions. (You will not need to use these in CS144.) </li>
-<li>Avoid C-style strings (<code>char *str</code>) or string functions (<code>strlen()</code>, <code>strcpy()</code>). These are pretty error-prone. Use a <code>std::string</code> instead. </li>
-<li>Never use C-style casts (e.g., (FILE *)x). Use a C++ <code>static_cast</code> if you have to (you generally will not need this in CS144). </li>
-<li>Prefer passing function arguments by <code>const</code> reference (e.g.: <code>const Address &amp; address</code>).</li>
-<li>Make every variable <code>const</code> unless it needs to be mutated. </li>
-<li>Make every method <code>const</code> unless it needs to mutate the object. </li>
-<li>Avoid global variables, and give every variable the smallest scope possible.</li>
-</ul>
-<h2 id="lab0"><a href="#lab0" class="headerlink" title="lab0"></a>lab0</h2><h3 id="Writing-webget"><a href="#Writing-webget" class="headerlink" title="Writing webget"></a>Writing webget</h3><p>完成<code>webget.cc</code>中的<code>get_URL</code>函数，实现对网页数据的获取。</p>
-<p>步骤如下</p>
-<ul>
-<li>创建一个<code>TCPSocket</code>并与服务器建立连接。</li>
-<li>向服务器发送请求，在<code>HTTP</code>中每行的结尾应该为<code>\r\n</code>。</li>
-<li>发送完请求后，客户端应该关闭<code>TCPSocket</code>的写功能(<code>SHUT_WR</code>)，对应前面的<code>Connection: close</code>，即http短连接，服务器发送完数据后断开连接。</li>
-<li>循环读取从服务器发送过来的信息，直到遇到<code>EOF (end of file)</code>。</li>
-<li>关闭<code>TCPSocket</code>。</li>
-</ul>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void get_URL(const string &amp;host, const string &amp;path) {
-    // Your code here.
-
-    // You will need to connect to the "http" service on
-    // the computer whose name is in the "host" string,
-    // then request the URL path given in the "path" string.
-	TCPSocket sock{};
-	sock.connect(Address(host, "http"));
-	
-    // Then you'll need to print out everything the server sends back,
-    // (not just one call to read() -- everything) until you reach
-    // the "eof" (end of file).
-	sock.write("GET " + path + " HTTP/1.1\r\nHost: " + host + "\r\n\r\n");
-	sock.shutdown(SHUT_WR);
-	
-	while (!sock.eof()) {
-        cout &lt;&lt; sock.read();
-    }
-    sock.close();
-
-    return;
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<hr>
-<h3 id="An-in-memory-reliable-byte-stream"><a href="#An-in-memory-reliable-byte-stream" class="headerlink" title="An in-memory reliable byte stream"></a>An in-memory reliable byte stream</h3><p>实现一个用来支持给输入端写入数据和输出端读取数据的字节流缓冲区。</p>
-<p>ca</p>
-
+                
                 
             </div>
             <hr/>
@@ -579,7 +515,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://Maoshengren.github.io/2022/02/20/cs144-notes/">http://Maoshengren.github.io/2022/02/20/cs144-notes/</a>
+                    <a href="http://Maoshengren.github.io/2022/02/25/unix-i-o-duo-lu-fu-yong/">http://Maoshengren.github.io/2022/02/25/unix-i-o-duo-lu-fu-yong/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -616,15 +552,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/CS144/">
-                                    <span class="chip bg-color">CS144</span>
-                                </a>
-                            
-                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                                    <span class="chip bg-color">计算机网络</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -792,29 +720,68 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/21/k-ge-yi-zu-fan-zhuan-lian-biao/">
+                <a href="/2022/02/25/unix-i-o-duo-lu-fu-yong/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="k个一组翻转链表">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Unix I/O多路复用">
                         
-                        <span class="card-title">k个一组翻转链表</span>
+                        <span class="card-title">Unix I/O多路复用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            k个一组翻转链表
+                            Unix I/O多路复用
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-21
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Maosr
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/02/25/dao-yu-shu-liang-leetcode/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="岛屿数量-LeetCode">
+                        
+                        <span class="card-title">岛屿数量-LeetCode</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            岛屿数量-LeetCode
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-25
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -836,59 +803,6 @@
                     
                     <a href="/tags/%E7%AE%97%E6%B3%95/">
                         <span class="chip bg-color">算法</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/02/19/cao-zuo-xi-tong-fu-xi/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="操作系统复习">
-                        
-                        <span class="card-title">操作系统复习</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            操作系统复习
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-19
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
-                        <span class="chip bg-color">操作系统</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%A4%8D%E4%B9%A0/">
-                        <span class="chip bg-color">复习</span>
                     </a>
                     
                 </div>
@@ -1091,7 +1005,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">23.7k</span>&nbsp;字
+                class="white-color">23.3k</span>&nbsp;字
             
             
             
