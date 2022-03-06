@@ -550,31 +550,31 @@
 <ul>
 <li>实验中直接将5位<code>OPCODE</code>和3位<code>FUNCT3</code>组成8位指令码，与<code>OP_Funct3</code>比较即可。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124165600133.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124165600133.png" alt></p>
 <h4 id="2-变长指令周期—时序发生器FSM设计"><a href="#2-变长指令周期—时序发生器FSM设计" class="headerlink" title="2. 变长指令周期—时序发生器FSM设计"></a>2. 变长指令周期—时序发生器FSM设计</h4><blockquote>
 <p>单总线结构中如果采用变长指令周期，不同指令机器周期数不同，每个机器周期节拍数也是可变化的，具体状态图如下：</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/756259.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/756259.png" alt></p>
 <ul>
 <li>根据这个状态转换图，可以知道前4个周期S0-S3都是固定不变的<strong>取指周期</strong>，而<code>LW</code>、<code>SW</code>、<code>BEQ</code>有2个节拍的<strong>计算周期</strong>，<code>ADDI</code>、<code>ADD</code>以及与<code>ADD</code>同为R型指令的<code>SLT</code>直接进入<strong>执行周期</strong>。</li>
 <li>因此现态到次态的转换从3-4为前三条指令，从3-6为后两条指令，<code>ERET</code>和<code>IntR</code>为中断相关信号，忽略即可。</li>
 <li>其余状态转换依次填写。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124165911555.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124165911555.png" alt></p>
 <ul>
 <li>填完之后将对应的逻辑表达式粘贴到logisim分析电路即可。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124170800447.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124170800447.png" alt></p>
 <p>打开 工程-&gt;分析组合逻辑电路。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124170832324.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124170832324.png" alt></p>
 <p>把对应的表达式复制到对应的输出。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124170927498.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124170927498.png" alt></p>
 <hr>
-<h4 id="3-变长指令周期—时序发生器输出函数设计"><a href="#3-变长指令周期—时序发生器输出函数设计" class="headerlink" title="3. 变长指令周期—时序发生器输出函数设计"></a>3. 变长指令周期—时序发生器输出函数设计</h4><p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/756259.png" alt=""></p>
+<h4 id="3-变长指令周期—时序发生器输出函数设计"><a href="#3-变长指令周期—时序发生器输出函数设计" class="headerlink" title="3. 变长指令周期—时序发生器输出函数设计"></a>3. 变长指令周期—时序发生器输出函数设计</h4><p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/756259.png" alt></p>
 <ul>
 <li>依然根据该图填表，M开头的表示哪个周期，T开头表示哪个节拍。由于只到S8状态，所以9和10忽略。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124171147009.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211124171147009.png" alt></p>
 <ul>
 <li>填写完后复制表达式到logisim中生成电路即可。</li>
 </ul>
@@ -588,16 +588,16 @@
 <li>总线上可以有多个模块同时接收数据</li>
 <li>某一时刻只能有一个模块向总线发送数据，否则出现数据冲突。所以向内总线输出的部件均采用三态门控制，只有控制信号为1时，才向总线输出数据。如<code>PCout</code>为1,时，PC寄存器才能向内总线输出指令地址。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125144302093.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125144302093.png" alt></p>
 <p>以下为控制信号及功能方便查阅。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125144430227.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125144430227.png" alt></p>
 <hr>
 <p><strong>指令对应的结构和功能</strong></p>
 <p><code>x</code>代表寄存器，<code>x[rs1]</code>即rs1号寄存器。</p>
 <blockquote>
 <p><code>LW</code>: 从主存地址 <code>x[rs1] + sign-extend(offset)</code> 读取四个字节，写入 <code>x[rd]</code> ，12位立即数 <code>offset</code>符号扩展为32位才能送<code>ALU</code>计算访存地址，是一个典型的变址寻址。</p>
 <p>汇编代码为<code>lw rd,offset(rs1)</code> </p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121203825323.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121203825323.png" alt></p>
 </blockquote>
 <ul>
 <li><code>LW</code>分为取值、计算、执行三个周期。</li>
@@ -606,35 +606,35 @@
 <li>DR的值送入指令寄存器IR(<code>DRout=1</code>，<code>IRin=1</code>)。</li>
 <li>在理解了各个节拍的操作和控制信号的功能后，才方便自行推断后续<code>SLT</code>指令的控制信号。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125144107030.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125144107030.png" alt></p>
 <blockquote>
 <p><code>SW</code>: 将<code>x[rs2]</code>的4个字节存入主存地址 <code>x[rs1]+sign-extend(offset)</code>。</p>
 <p>汇编代码为<code>sw rs2,offset(rs1)</code> </p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121203852598.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121203852598.png" alt></p>
 </blockquote>
 <ul>
 <li><code>SW</code>分为取值、计算、执行三个周期。取指周期与<code>LW</code>相同。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125151748341.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125151748341.png" alt></p>
 <blockquote>
 <p><code>BEQ</code>: 若寄存器<code>x[rs1]</code>和寄存器<code>x[rs2]</code>的值相等，把<code>PC</code>的值设为当前值加上符号位扩展的偏移<code>offset</code>。</p>
 <p>汇编代码为<code>beq rs1,rs2,offset</code> </p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121204019453.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121204019453.png" alt></p>
 </blockquote>
 <ul>
 <li><code>offset</code>的值表示分支目标地址相对下一条指令也就是<code>PC+4</code>的指令条数，所以计算分支目标地址时应该将PC的值（取指阶段已更新为<code>PC+4</code>）与<code>offset</code>符号扩展为32位再左移两位后的值相加，左移两位的目的是计算字节偏移。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125152225700.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125152225700.png" alt></p>
 <blockquote>
 <p><code>ADDI</code>: 把符号位扩展的立即数加到寄存器<code>x[rs1]</code>上，结果写入<code>x[rd]</code>。忽略算术溢出。</p>
 <p>汇编代码为<code>addi rd,rs1,imm</code> </p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121203748836.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121203748836.png" alt></p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125152444742.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125152444742.png" alt></p>
 <blockquote>
 <p><code>SLT</code>: 比较<code>x[rs1]</code>和<code>x[rs2]</code>中的数，如果<code>x[rs1]</code>更小，向<code>x[rd]</code>写入1，否则写入0。</p>
 <p>汇编代码为<code>slt rd,rs1,rs2</code> </p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121204059669.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211121204059669.png" alt></p>
 </blockquote>
 <ul>
 <li>书中并未给出SLT指令的控制流程，但ADD和SLT均为R型指令，区别仅仅在于指令字中的<code>funct</code>字段不同，最终 ALU 进行的运算不同而已，可参考ADD指令。</li>
@@ -642,12 +642,12 @@
 <blockquote>
 <p><code>ADD</code>：将 <code>rs1</code> 与 <code>rs2</code> 寄存器相加结果送 <code>rd</code> 寄存器。</p>
 <p>汇编代码为<code>add rd,rs1,rs2</code> </p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125152712093.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125152712093.png" alt></p>
 </blockquote>
 <ul>
 <li>将寄存器 <code>rs1</code> 的内容送 <code>X</code>，再将寄存器 <code>rs2</code> 的内容送 ALU 进行加法运算， 最后将结果送 <code>rd</code> 寄存器</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125152855100.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125152855100.png" alt></p>
 <p>由此推断出SLT的控制信号：</p>
 <div class="table-container">
 <table>
@@ -684,23 +684,23 @@
 <p>可以看出，相比ADD指令，SLT指令仅仅是改变了T2节拍的<code>ADD</code>信号为<code>SLT</code>信号，以控制ALU运算。</p>
 <p>至此，所有周期节拍对应信号已确定，将表填好后表达式输入logisim生成电路即可。</p>
 <p>表如下：</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125153843247.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125153843247.png" alt></p>
 <p><strong>调试</strong> </p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129104357362.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129104357362.png" alt></p>
 <p>如图，控制总线的信号出现了错误，<code>ErrBit</code>指出了出错的第一位信号，<code>0d</code>指出了是第12位发生了错误，此时应该先查看硬布线控制器中的组合逻辑单元，此时可以根据<code>OCinput</code>判断出是哪个指令，哪个周期，哪个节拍出现了问题（图中<code>0284(00010 100 0010 0)</code>代表：<code>SW</code>指令，<code>Mif</code>周期，<code>T3</code>节拍），再根据出现问题的一行，找到出错信号，改成<code>ControlBus</code>的正确信号即可。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129104553616.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129104553616.png" alt></p>
 <hr>
 <h4 id="5-变长指令周期—硬布线控制器设计"><a href="#5-变长指令周期—硬布线控制器设计" class="headerlink" title="5. 变长指令周期—硬布线控制器设计"></a>5. 变长指令周期—硬布线控制器设计</h4><ul>
 <li>将线路正确连接即可。</li>
 <li>注意状态寄存器为下降沿，状态机和输出函数为变长指令的封装电路。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125154014747.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125154014747.png" alt></p>
 <hr>
 <h4 id="6-变长指令周期—单总线CPU设计"><a href="#6-变长指令周期—单总线CPU设计" class="headerlink" title="6. 变长指令周期—单总线CPU设计"></a>6. 变长指令周期—单总线CPU设计</h4><ul>
 <li>加载sort-5-riscv.hex到RAM即可。</li>
 <li>ctrl+k进行仿真，最后指令数会停在251，最后一条指令为<code>beq zero,zero,0</code>，是个死循环。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125154724265.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211125154724265.png" alt></p>
 <hr>
 <h3 id="单总线CPU设计-现代时序"><a href="#单总线CPU设计-现代时序" class="headerlink" title="单总线CPU设计(现代时序)"></a>单总线CPU设计(现代时序)</h3><h4 id="1-RISC-V单总线CPU设计"><a href="#1-RISC-V单总线CPU设计" class="headerlink" title="1. RISC-V单总线CPU设计"></a>1. RISC-V单总线CPU设计</h4><p>同上</p>
 <h4 id="2-单总线CPU微程序入口查找逻辑"><a href="#2-单总线CPU微程序入口查找逻辑" class="headerlink" title="2. 单总线CPU微程序入口查找逻辑"></a>2. 单总线CPU微程序入口查找逻辑</h4><blockquote>
@@ -709,17 +709,17 @@
 <p>每条<strong>机器指令</strong>对应<strong>一段微程序</strong>，一段微程序包括若干条微指令。</p>
 </blockquote>
 <p>上个实验是将控制信号用电路来实现，依然是这个图。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129104553616.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129104553616.png" alt></p>
 <p>而这个实验用的微程序，将所有控制信号放在<strong>控制存储器中</strong>。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129112715741.png" alt=""></p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129112653059.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129112715741.png" alt></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129112653059.png" alt></p>
 <blockquote>
 <p>从控存中取出的数据，即<strong>微指令字</strong>包括微<strong>操作控制字段</strong>，<strong>判别测试字段</strong>，<strong>下址字段</strong>三部分， 下址字段用于指示即将访问的下一条微指令的地址，判别字段用于地址逻辑转移。</p>
 </blockquote>
 <p>本实验采用的是下址字段法，由下址字段直接给出下一条微指令的地址。采用如下的状态机来设计微指令的存放。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/758968.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/758968.png" alt></p>
 <p>因此五条指令的入口地址依次确定。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129112226297.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129112226297.png" alt></p>
 <p>将逻辑表达式生成电路即可。</p>
 <hr>
 <h4 id="3-单总线CPU微程序条件判别测试逻辑"><a href="#3-单总线CPU微程序条件判别测试逻辑" class="headerlink" title="3. 单总线CPU微程序条件判别测试逻辑"></a>3. 单总线CPU微程序条件判别测试逻辑</h4><blockquote>
@@ -764,13 +764,13 @@
 </table>
 </div>
 <p>根据信号填表(因为后面中断实验还用到了该表，这个实验的已经覆盖掉了)即可，最终电路如下。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129113110649.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129113110649.png" alt></p>
 <hr>
 <h4 id="4-单总线CPU微程序控制器设计"><a href="#4-单总线CPU微程序控制器设计" class="headerlink" title="4. 单总线CPU微程序控制器设计"></a>4. 单总线CPU微程序控制器设计</h4><blockquote>
 <p>将三级时序实验的控制信号填入下表即可，下址字段为该微指令地址+1。注意beq分支。</p>
 <p>填写完成后，右下角的检查程序会显示正确。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129141836158.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129141836158.png" alt></p>
 <hr>
 <h4 id="5-采用微程序的单总线CPU设计"><a href="#5-采用微程序的单总线CPU设计" class="headerlink" title="5. 采用微程序的单总线CPU设计"></a>5. 采用微程序的单总线CPU设计</h4><blockquote>
 <p>在RAM中加载<code>sort-5-riscv.hex</code>程序，ctrl+k自动运行，程序应该运行至0x7c1节拍停下，指令计数为251，注意最后一条指令是一条beq分支指令，会跳回当前指令继续执行，是死循环。</p>
@@ -779,20 +779,20 @@
 <h4 id="6-现代时序硬布线控制器状态机设计"><a href="#6-现代时序硬布线控制器状态机设计" class="headerlink" title="6. 现代时序硬布线控制器状态机设计"></a>6. 现代时序硬布线控制器状态机设计</h4><blockquote>
 <p>依然根据这张状态转换图来填写表格。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/758968.png" alt=""></p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129144936995.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/758968.png" alt></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129144936995.png" alt></p>
 <hr>
 <h4 id="7-现代时序硬布线控制器设计"><a href="#7-现代时序硬布线控制器设计" class="headerlink" title="7. 现代时序硬布线控制器设计"></a>7. 现代时序硬布线控制器设计</h4><blockquote>
 <p>正确连线即可。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129145101788.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129145101788.png" alt></p>
 <hr>
 <h3 id="RISC-V现代时序中断机制实现"><a href="#RISC-V现代时序中断机制实现" class="headerlink" title="RISC-V现代时序中断机制实现"></a>RISC-V现代时序中断机制实现</h3><h4 id="2-支持中断的微程序入口查找逻辑"><a href="#2-支持中断的微程序入口查找逻辑" class="headerlink" title="2. 支持中断的微程序入口查找逻辑"></a>2. 支持中断的微程序入口查找逻辑</h4><blockquote>
 <p>相比上一个实验，只是多了一条中断指令。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/759833.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/759833.png" alt></p>
 <p>根据这个加入中断的状态转换图填表即可。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129145521322.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129145521322.png" alt></p>
 <hr>
 <h4 id="3-支持中断的微程序条件判别测试逻辑"><a href="#3-支持中断的微程序条件判别测试逻辑" class="headerlink" title="3. 支持中断的微程序条件判别测试逻辑"></a>3. 支持中断的微程序条件判别测试逻辑</h4><ul>
 <li>先查看信号的功能描述</li>
@@ -837,7 +837,7 @@
 </tbody>
 </table>
 </div>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129150506107.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129150506107.png" alt></p>
 <ul>
 <li>查看微程序控制器+中断的电路，可以看成判别逻辑根据5位输入确定选择5路中的哪一路。</li>
 <li>P0为1时，<code>MuxSel</code>为1，选择对应指令的入口地址。</li>
@@ -846,28 +846,28 @@
 <li>P1比P2优先考虑</li>
 <li>其余情况为顺序地址。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129150126770.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129150126770.png" alt></p>
 <blockquote>
 <p>因为后面实验发现表格有误，所以面向实验测试集编程的表格，仅供参考。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129145951889.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129145951889.png" alt></p>
 <hr>
 <h4 id="4-支持中断的微程序控制器设计"><a href="#4-支持中断的微程序控制器设计" class="headerlink" title="4. 支持中断的微程序控制器设计"></a>4. 支持中断的微程序控制器设计</h4><blockquote>
 <p>正确连线即可。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129152140953.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129152140953.png" alt></p>
 <hr>
 <h4 id="5-支持中断的微程序单总线CPU设计"><a href="#5-支持中断的微程序单总线CPU设计" class="headerlink" title="5. 支持中断的微程序单总线CPU设计"></a>5. 支持中断的微程序单总线CPU设计</h4><blockquote>
 <p>根据中断控制器的示意图连线。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129152910461.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129152910461.png" alt></p>
 <ul>
 <li>中断1、2分别对应多路选择器的1、2端口。</li>
 <li>用三态门根据中断控制信号进行内总线的读取数据和输出数据。</li>
 <li>D触发器相当于IE寄存器。</li>
 <li>中断的入口地址需要用<code>rars1_3_1.jar</code>文件查看。</li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129152957973.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129152957973.png" alt></p>
 <p><strong>中断入口地址查看</strong></p>
 <ul>
 <li>在当前文件夹打开终端，使用命令<code>java -jar rars1_3_1.jar</code>。</li>
@@ -879,21 +879,21 @@
 <p>在RAM中加载<code>sort-5-int-riscv.hex</code>程序，执行后停在了指令计数252处。</p>
 <p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129153926561.png" style="zoom:50%;"></p>
 <p>点击1按钮，观察RAM内容，可以看到程序将在90开始的8个字单元全部加1。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129154018367.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129154018367.png" alt></p>
 <p>点击2按钮，观察RAM内容，可以看到程序将在a0开始的8个字单元全部减1。</p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129154117053.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129154117053.png" alt></p>
 <hr>
 <h4 id="6-支持中断的现代时序硬布线控制器状态机设计"><a href="#6-支持中断的现代时序硬布线控制器状态机设计" class="headerlink" title="6. 支持中断的现代时序硬布线控制器状态机设计"></a>6. 支持中断的现代时序硬布线控制器状态机设计</h4><blockquote>
 <p>依然根据这个图填表即可。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/759997.png" alt=""></p>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129154342249.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/759997.png" alt></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129154342249.png" alt></p>
 <p>（日常面向测试集填表了）</p>
 <hr>
 <h4 id="7-支持中断的现代时序硬布线控制器设计"><a href="#7-支持中断的现代时序硬布线控制器设计" class="headerlink" title="7. 支持中断的现代时序硬布线控制器设计"></a>7. 支持中断的现代时序硬布线控制器设计</h4><blockquote>
 <p>还是连线。</p>
 </blockquote>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129154507464.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129154507464.png" alt></p>
 <ul>
 <li>控制存储器中需要加载对应的微指令程序，相比上一个微指令表，只是多了一个中断指令，还有将下址字段法换成了计数器法。</li>
 <li><strong>计数器法</strong>: 微指令中不再包括下址字段部分，可有效减少微指令字长度，缩小控存容量开销，当判别测试字段不符合待测试的状态条件时，表示微程序顺序执行，后继微指令地址由 <code>μAR</code>加1得到，否则根据约定修改的<code>μAR</code>值实现微程序分支。<ul>
@@ -901,7 +901,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129145839574.png" alt=""></p>
+<p><img src="/2021/11/22/hust-ji-suan-ji-zu-cheng-yuan-li-cpu-shi-yan/image-20211129145839574.png" alt></p>
 <p>至此所有实验都做完了，恭喜你通（lei）关（si）了！</p>
 
                 

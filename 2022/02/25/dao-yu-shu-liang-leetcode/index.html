@@ -511,7 +511,7 @@
 <p>一个需要注意的点就是<code>dfs</code>函数，应该使用形如<code>dfs(grid, row-1, col)</code>这样传参方式，而不应在<code>dfs</code>函数内修改<code>row</code>和<code>col</code>，像这样：<code>row--; dfs(grid, row-1, col)</code>，这样会导致函数在返回的时候，并不会回退，就像下图这种情况：导致右边的1没有被搜索到。</p>
 <p>在代码出错的时候，最后将深度优先搜索的信息打印出来，方便调试，否则肉眼调试很难解决问题。</p>
 <p>最后用两个for循环遍历数组，对每个遍历到的1都进行dfs搜索，搜索结束就对结果+1，时间复杂度为$O(MN)$，空间复杂度最坏为$O(MN)$，即数组全部为1，需要压$MN$个栈。</p>
-<p><img src="/2022/02/25/dao-yu-shu-liang-leetcode/image-20220225221746125.png" alt=""></p>
+<p><img src="/2022/02/25/dao-yu-shu-liang-leetcode/image-20220225221746125.png" alt></p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">numIslands</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> grid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">int</span> row <span class="token operator">=</span> grid<span class="token punctuation">.</span>length<span class="token punctuation">,</span> col <span class="token operator">=</span> grid<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
@@ -788,36 +788,54 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/25/unix-i-o-duo-lu-fu-yong/">
+                <a href="/2022/02/25/dao-yu-shu-liang-leetcode/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Unix I/O多路复用">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="岛屿数量-LeetCode">
                         
-                        <span class="card-title">Unix I/O多路复用</span>
+                        <span class="card-title">岛屿数量-LeetCode</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Unix I/O多路复用
+                            岛屿数量-LeetCode
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-25
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-25
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Maosr
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/LeetCode/" class="post-category">
+                                    LeetCode
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/LeetCode/">
+                        <span class="chip bg-color">LeetCode</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">算法</span>
+                    </a>
+                    
                 </div>
                 
             </div>
